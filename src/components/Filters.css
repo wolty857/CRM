@@ -1,0 +1,21 @@
+.filters h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+  
+  .filters-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .filters-group input,
+  .filters-group select {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+    width: 180px;
+  }
+  

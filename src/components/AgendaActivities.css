@@ -1,0 +1,40 @@
+.agenda-activities {
+  padding: 1rem;
+}
+
+.agenda-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.agenda-list li {
+  margin-bottom: 0.5rem;
+  background: #f3f4f6;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.agenda-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.agenda-form input,
+.agenda-form button {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+}
+
+.agenda-form button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.agenda-form button:hover {
+  background-color: #2563eb;
+}

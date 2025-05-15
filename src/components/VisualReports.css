@@ -1,0 +1,17 @@
+.visual-reports h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+  
+  .chart-placeholder {
+    height: 200px;
+    background-color: #e5e7eb;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    color: #6b7280;
+  }
+  

@@ -1,0 +1,31 @@
+.add-lead-form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.add-lead-form input,
+.add-lead-form select {
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.add-lead-form button {
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #0b6efd;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.add-lead-form button:hover {
+  background-color: #084cdf;
+}
+
+.leads-table td button {
+  margin-right: 5px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
