@@ -1,31 +1,197 @@
-.add-lead-form {
-  margin-top: 1rem;
+.customers-leads {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  height: 100%;
+}
+
+.leads-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  text-align: left;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+.leads-table th,
+.leads-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.leads-table th {
+  font-weight: 600;
+  color: var(--text-color);
+  background-color: #f8f7fc;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.leads-table tr:last-child td {
+  border-bottom: none;
+}
+
+.leads-table tr:hover {
+  background-color: rgba(124, 58, 237, 0.05);
+}
+
+/* Estado de leads con código de colores */
+.estado-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 100px;
+}
+
+.estado-nuevo {
+  background-color: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+.estado-activo {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.estado-negociacion {
+  background-color: rgba(192, 38, 211, 0.1);
+  color: #c026d3;
+}
+
+.estado-perdido {
+  background-color: rgba(236, 72, 153, 0.1);
+  color: #ec4899;
+}
+
+/* Badges de plan */
+.plan-badge-small {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 80px;
+}
+
+.plan-basico {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(139, 92, 246, 0.15) 100%);
+  color: #7c3aed;
+}
+
+.plan-pro {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.15) 100%);
+  color: #10b981;
+}
+
+.plan-premium {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(244, 114, 182, 0.15) 100%);
+  color: #ec4899;
+}
+
+/* Botones de acción */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.button-icon {
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.edit-button {
+  color: #7c3aed;
+}
+
+.edit-button:hover {
+  background-color: rgba(124, 58, 237, 0.1);
+}
+
+.delete-button {
+  color: #ec4899;
+}
+
+.delete-button:hover {
+  background-color: rgba(236, 72, 153, 0.1);
+}
+
+/* Formulario para agregar/editar */
+.add-lead-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px;
+  background-color: #f8f7fc;
+  border-radius: var(--border-radius);
+  margin-top: auto;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .add-lead-form input,
 .add-lead-form select {
-  padding: 8px;
-  font-size: 1rem;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 200px;
+  transition: var(--transition);
+}
+
+.add-lead-form input:focus,
+.add-lead-form select:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
 }
 
 .add-lead-form button {
-  padding: 6px 12px;
-  cursor: pointer;
-  background-color: #0b6efd;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 6px rgba(124, 58, 237, 0.2);
 }
 
 .add-lead-form button:hover {
-  background-color: #084cdf;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(124, 58, 237, 0.25);
 }
 
-.leads-table td button {
-  margin-right: 5px;
-  padding: 4px 8px;
-  font-size: 0.8rem;
+.add-lead-form button:last-child {
+  background: #f4f4f5;
+  color: var(--text-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-lead-form button:last-child:hover {
+  background: #e4e4e7;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }

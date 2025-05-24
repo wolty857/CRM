@@ -1,20 +1,132 @@
-.sales-pipeline h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-  }
-  
-  .pipeline-stages {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  
-  .stage {
-    background-color: #dbeafe;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    color: #1e3a8a;
-  }
+.sales-pipeline {
+  height: 100%;
+}
+
+.pipeline-stages {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pipeline-stage {
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: var(--border-radius);
+  position: relative;
+  transition: var(--transition);
+  border-left: 4px solid var(--primary-color);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.pipeline-stage:hover {
+  transform: translateX(4px);
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.15);
+}
+
+.stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.stage-title {
+  font-weight: 600;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stage-count {
+  color: white;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  min-width: 28px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.stage-value {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.stage-progress {
+  height: 8px;
+  width: 100%;
+  background-color: #f4f4f5;
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Colores específicos para cada etapa */
+.pipeline-stage:nth-child(1) {
+  border-left-color: #7c3aed; /* Morado primario */
+}
+.pipeline-stage:nth-child(1) .stage-count {
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
+  box-shadow: 0 2px 5px rgba(124, 58, 237, 0.3);
+}
+.pipeline-stage:nth-child(1) .progress-bar {
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
+}
+
+.pipeline-stage:nth-child(2) {
+  border-left-color: #8b5cf6; /* Morado secundario */
+}
+.pipeline-stage:nth-child(2) .stage-count {
+  background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+  box-shadow: 0 2px 5px rgba(139, 92, 246, 0.3);
+}
+.pipeline-stage:nth-child(2) .progress-bar {
+  background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+}
+
+.pipeline-stage:nth-child(3) {
+  border-left-color: #c026d3; /* Púrpura */
+}
+.pipeline-stage:nth-child(3) .stage-count {
+  background: linear-gradient(90deg, #c026d3, #d946ef);
+  box-shadow: 0 2px 5px rgba(192, 38, 211, 0.3);
+}
+.pipeline-stage:nth-child(3) .progress-bar {
+  background: linear-gradient(90deg, #c026d3, #d946ef);
+}
+
+.pipeline-stage:nth-child(4) {
+  border-left-color: #ec4899; /* Rosa */
+}
+.pipeline-stage:nth-child(4) .stage-count {
+  background: linear-gradient(90deg, #ec4899, #f472b6);
+  box-shadow: 0 2px 5px rgba(236, 72, 153, 0.3);
+}
+.pipeline-stage:nth-child(4) .progress-bar {
+  background: linear-gradient(90deg, #ec4899, #f472b6);
+}
+
+/* Elemento decorativo */
+.pipeline-stage::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  border-bottom-left-radius: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
   
