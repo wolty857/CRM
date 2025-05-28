@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import './AgendaActivities.css';
 
 function AgendaActivities() {
-  const [actividades, setActividades] = useState([
-    { titulo: 'Llamar a cliente', fecha: '2025-05-05', hora: '10:00' },
-    { titulo: 'Reunión interna', fecha: '2025-05-05', hora: '12:00' },
-  ]);
+  const [actividades, setActividades] = useState([]); // Initialize with an empty array
 
   const [titulo, setTitulo] = useState('');
   const [fecha, setFecha] = useState('');
@@ -24,14 +21,18 @@ function AgendaActivities() {
   return (
     <div className="component-card agenda-activities">
       <h2>Agenda</h2>
-      <ul className="agenda-list">
-        {actividades.map((act, i) => (
-          <li key={i}>
-            📌 <strong>{act.titulo}</strong> <br />
-            🗓 {act.fecha} 🕒 {act.hora}
-          </li>
-        ))}
-      </ul>
+      {actividades.length === 0 ? (
+        <p>No hay actividades programadas.</p>
+      ) : (
+        <ul className="agenda-list">
+          {actividades.map((act, i) => (
+            <li key={i}>
+              📌 <strong>{act.titulo}</strong> <br />
+              🗓 {act.fecha} 🕒 {act.hora}
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="agenda-form">
         <input
           type="text"

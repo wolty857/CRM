@@ -1,17 +1,31 @@
 .visual-reports h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
+    font-size: 1.2rem; /* Ajustado al estandar de .component-card h2 */
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-weight: 600;
   }
   
   .chart-placeholder {
     height: 200px;
-    background-color: #e5e7eb;
-    border-radius: 10px;
+    background-color: var(--background-color); /* Usar variable */
+    border-radius: var(--border-radius); /* Usar variable */
     display: flex;
     align-items: center;
     justify-content: center;
     font-style: italic;
-    color: #6b7280;
+    color: var(--text-light); /* Usar variable */
   }
-  
+
+body.dark-mode .visual-reports .recharts-cartesian-axis-tick-value tspan {
+  fill: var(--text-light);
+}
+
+body.dark-mode .visual-reports .recharts-text.recharts-tooltip-label {
+  fill: var(--text-color);
+}
+
+body.dark-mode .visual-reports .recharts-cartesian-grid line {
+  stroke: var(--border-color);
+}

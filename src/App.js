@@ -13,13 +13,37 @@ import { ClientesProvider } from './context/ClientesContext';
 function App() {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState('básico'); // Puede ser básico, pro o premium
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768); // Collapsed by default on mobile
+  // const [selectedPlan, setSelectedPlan] = useState('básico'); // Eliminado
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Función para alternar la barra lateral
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
+
+  // Función para alternar el modo oscuro
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  // Efecto para aplicar la clase dark-mode al body y sidebar state en resize
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarCollapsed(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isDarkMode]);
 
   // Función para renderizar el contenido principal basado en la sección activa
   const renderMainContent = () => {
@@ -40,21 +64,21 @@ function App() {
       case 'data':
         return <DataManagement />;
       case 'agentes':
-        return <AgentesIA plan={selectedPlan} />;
+        return <AgentesIA />; // Eliminado prop plan
       default:
         return <div className="welcome-section">Selecciona una sección del menú lateral</div>;
     }
   };
 
   // Componente para mostrar los agentes de IA
-  const AgentesIA = ({ plan }) => {
+  const AgentesIA = () => { // Eliminado prop plan
     return (
       <div className="component-card agentes-ia">
         <h2>Agentes Inteligentes</h2>
         
-        <div className="plan-badge">
+        {/* <div className="plan-badge"> // Eliminado plan badge
           <span>Plan {plan.charAt(0).toUpperCase() + plan.slice(1)}</span>
-        </div>
+        </div> */}
         
         <div className="agentes-container">
           <div className="agente-card">
@@ -108,10 +132,9 @@ function App() {
 
   return (
     <ClientesProvider>
-      <div className="crm-app">
-        {/* Botón para alternar la barra lateral en móviles */}
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
-          {sidebarCollapsed ? '☰' : '✕'}
+      <div className={`crm-app ${isDarkMode ? 'dark-mode' : ''}`}>
+        <button className={`sidebar-toggle ${!sidebarCollapsed ? 'open' : ''}`} onClick={toggleSidebar}>
+          <span className="hamburger-icon"></span>
         </button>
         
         {/* Sidebar deslizable */}
@@ -130,29 +153,7 @@ function App() {
             />
           </div>
           
-          <div className="plan-selector">
-            <div className="plan-title">Plan Actual:</div>
-            <div className="plan-options">
-              <button 
-                className={`plan-option ${selectedPlan === 'básico' ? 'active' : ''}`}
-                onClick={() => setSelectedPlan('básico')}
-              >
-                Básico
-              </button>
-              <button 
-                className={`plan-option ${selectedPlan === 'pro' ? 'active' : ''}`}
-                onClick={() => setSelectedPlan('pro')}
-              >
-                Pro
-              </button>
-              <button 
-                className={`plan-option ${selectedPlan === 'premium' ? 'active' : ''}`}
-                onClick={() => setSelectedPlan('premium')}
-              >
-                Premium
-              </button>
-            </div>
-          </div>
+          {/* Eliminado el selector de planes */}
           
           <nav className="sidebar-nav">
             <button 
@@ -228,9 +229,14 @@ function App() {
           </div>
           
           <footer className="content-footer">
-            <p>© 2023 Cordova IA - Inteligencia Artificial para tu Negocio</p>
+            <p>© {new Date().getFullYear()} Cordova IA - Inteligencia Artificial para tu Negocio</p>
           </footer>
         </main>
+
+        {/* Botón para cambiar modo oscuro */}
+        <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+          {isDarkMode ? '☀️' : '🌙'}
+        </button>
       </div>
     </ClientesProvider>
   );
