@@ -8,6 +8,7 @@ import CustomersLeads from './components/CustomersLeads';
 import AgendaActivities from './components/AgendaActivities';
 import SalesPipeline from './components/SalesPipeline';
 import DataManagement from './components/DataManagement'; // Importar el componente DataManagement
+import Login from './components/Login/Login'; // Importar el componente Login
 import { ClientesProvider } from './context/ClientesContext';
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768); // Collapsed by default on mobile
   // const [selectedPlan, setSelectedPlan] = useState('básico'); // Eliminado
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Función para alternar la barra lateral
   const toggleSidebar = () => {
@@ -26,6 +29,17 @@ function App() {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+
+  // Verificar autenticación al cargar la app
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    
+    if (user && token) {
+      setIsAuthenticated(true);
+      setCurrentUser(JSON.parse(user));
+    }
+  }, []);
 
   // Efecto para aplicar la clase dark-mode al body y sidebar state en resize
   useEffect(() => {
@@ -44,6 +58,24 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [isDarkMode]);
+
+  // Función para manejar el login exitoso
+  const handleLogin = (user) => {
+    setIsAuthenticated(true);
+    setCurrentUser(user);
+  };
+
+  // Función para manejar el logout
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+  };
+  // Si no está autenticado, mostrar el componente Login
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   // Función para renderizar el contenido principal basado en la sección activa
   const renderMainContent = () => {
