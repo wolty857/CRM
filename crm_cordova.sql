@@ -106,6 +106,22 @@ INSERT INTO `planes` (`id_planes`, `Tipo_plan`) VALUES
 (2, 'Plan Pro'),
 (3, 'Plan Premium');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL UNIQUE,
+  `password_hash` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL UNIQUE,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Índices para tablas volcadas
 --
