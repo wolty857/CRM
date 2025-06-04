@@ -50,19 +50,19 @@
   min-width: 100px;
 }
 
-.estado-nuevo {
-  background-color: rgba(124, 58, 237, 0.1);
-  color: #7c3aed;
+.estado-frio {
+  background-color: #add8e6;
+  color: #003366;
 }
 
-.estado-activo {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+.estado-tibio {
+  background-color: #fff3cd;
+  color: #856404;
 }
 
-.estado-negociacion {
-  background-color: rgba(192, 38, 211, 0.1);
-  color: #c026d3;
+.estado-caliente {
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
 .estado-perdido {
