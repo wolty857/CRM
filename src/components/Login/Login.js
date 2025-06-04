@@ -1,0 +1,99 @@
+import React, { useState } from 'react';
+import './Login.css';
+
+const Login = ({ onLogin }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');    try {
+      const response = await fetch('http://localhost/dashboard/CRM%20Wolty/CRM/api/auth/login.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Guardar datos del usuario en localStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        
+        // Llamar a la función onLogin del componente padre
+        onLogin(data.user);
+      } else {
+        setError(data.message || 'Error al iniciar sesión');
+      }
+    } catch (error) {
+      setError('Error de conexión. Inténtalo de nuevo.');
+      console.error('Error de login:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <h2>CRM Wolty</h2>
+          <p>Inicia sesión para continuar</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="login-form">
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+          
+          <div className="form-group">
+            <label htmlFor="username">Usuario</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              placeholder="Ingresa tu usuario"
+              disabled={loading}
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Ingresa tu contraseña"
+              disabled={loading}
+            />
+          </div>
+          
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={loading}
+          >
+            {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
