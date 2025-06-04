@@ -1,31 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './CustomersLeads.css';
-import { useClientes } from '../context/ClientesContext';
 
 function CustomersLeads({ searchQuery }) {
-  const { 
-    clientes, 
-    agregarCliente, 
-    borrarCliente, 
-    modificarCliente, 
-    loading, 
-    error 
-  } = useClientes();
+  const { clientes, agregarCliente, borrarCliente, modificarCliente } = useClientes();
 
   const [nuevoNombre, setNuevoNombre] = useState('');
-  const [nuevoEmail, setNuevoEmail] = useState(''); // Added email
-  const [nuevoTelefono, setNuevoTelefono] = useState(''); // Added phone
   const [nuevoEstado, setNuevoEstado] = useState('Nuevo Lead');
   const [nuevoPlan, setNuevoPlan] = useState('básico');
-  const [clientesFiltrados, setClientesFiltrados] = useState([]);
-  const [editandoId, setEditandoId] = useState(null); // Changed from index to ID
+  const [clientesFiltrados, setClientesFiltrados] = useState(clientes);
+  const [editandoIndex, setEditandoIndex] = useState(null);
 
-  // Filtrar clientes cuando cambia el searchQuery o clientes
+  // Filtrar clientes cuando cambia el searchQuery
   useEffect(() => {
     if (searchQuery) {
       const filtrados = clientes.filter(cliente => 
-        cliente.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (cliente.email && cliente.email.toLowerCase().includes(searchQuery.toLowerCase()))
+        cliente.nombre.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setClientesFiltrados(filtrados);
     } else {
@@ -33,79 +23,50 @@ function CustomersLeads({ searchQuery }) {
     }
   }, [searchQuery, clientes]);
 
-  const resetForm = () => {
-    setNuevoNombre('');
-    setNuevoEmail('');
-    setNuevoTelefono('');
-    setNuevoEstado('Nuevo Lead');
-    setNuevoPlan('básico');
-    setEditandoId(null);
-  };
-
-  const handleAgregarOEditarLead = async () => {
-    if (!nuevoNombre) {
-      alert('El nombre es obligatorio.'); // Basic validation
-      return;
-    }
-    const clienteData = { 
+  const agregarOEditarLead = () => {
+    if (!nuevoNombre) return;
+    const cliente = { 
       nombre: nuevoNombre, 
-      email: nuevoEmail,
-      telefono: nuevoTelefono,
       estado: nuevoEstado,
-      plan: nuevoPlan
+      plan: nuevoPlan,
     };
 
-    try {
-      if (editandoId !== null) {
-        await modificarCliente(editandoId, clienteData);
-      } else {
-        await agregarCliente(clienteData);
-      }
-      resetForm();
-    } catch (apiError) {
-      // Error is already logged in context, can show user feedback here
-      alert(`Error al guardar cliente: ${apiError.message}`);
+    if (editandoIndex !== null) {
+      modificarCliente(editandoIndex, cliente);
+      setEditandoIndex(null);
+    } else {
+      agregarCliente(cliente);
     }
+
+    setNuevoNombre('');
+    setNuevoEstado('Nuevo Lead');
+    setNuevoPlan('básico');
   };
 
-  const prepararEdicion = (cliente) => {
+  const prepararEdicion = (cliente, index) => {
     setNuevoNombre(cliente.nombre);
-    setNuevoEmail(cliente.email || '');
-    setNuevoTelefono(cliente.telefono || '');
     setNuevoEstado(cliente.estado);
     setNuevoPlan(cliente.plan || 'básico');
-    setEditandoId(cliente.id);
+    setEditandoIndex(index);
   };
 
-  const handleBorrarCliente = async (clienteId) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar este cliente?')) {
-      try {
-        await borrarCliente(clienteId);
-      } catch (apiError) {
-        alert(`Error al eliminar cliente: ${apiError.message}`);
-      }
-    }
-  };
-  
-  // Función para generar la clase CSS basada en el estado
   const getEstadoClass = (estado) => {
-    switch(estado) {
-      case 'Nuevo Lead':
-        return 'estado-nuevo';
-      case 'Cliente Activo':
-        return 'estado-activo';
-      case 'Negociación':
-        return 'estado-negociacion';
+    switch (estado) {
+      case 'Frío':
+        return 'estado-frio';
+      case 'Tibio':
+        return 'estado-tibio';
+      case 'Caliente':
+        return 'estado-caliente';
       case 'Cliente Perdido':
         return 'estado-perdido';
       default:
         return '';
     }
   };
-  
-  // Función para generar la clase CSS basada en el plan
+
   const getPlanClass = (plan) => {
-    switch(plan) {
+    switch (plan) {
       case 'básico':
         return 'plan-basico';
       case 'pro':
@@ -129,36 +90,21 @@ function CustomersLeads({ searchQuery }) {
     <div className="component-card customers-leads">
       <h2>Clientes y Leads</h2>
 
-      {clientesFiltrados.length === 0 && !searchQuery && (
-        <div className="no-data-message">
-          <p>Aún no hay clientes o leads registrados.</p>
-          <p>Utiliza el formulario de abajo para agregar el primero.</p>
-        </div>
-      )}
-      {clientesFiltrados.length === 0 && searchQuery && (
-         <div className="no-data-message">
-          <p>No se encontraron clientes con el término "{searchQuery}".</p>
-        </div>
-      )}
-
-      {clientesFiltrados.length > 0 && (
-        <table className="leads-table">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Teléfono</th>
-              <th>Estado</th>
-              <th>Plan</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientesFiltrados.map((cliente) => (
-              <tr key={cliente.id}> {/* Use cliente.id as key */}
+      <table className="leads-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Estado</th>
+            <th>Plan</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {clientesFiltrados.map((cliente, i) => {
+            const clienteIndex = clientes.findIndex(c => c === cliente);
+            return (
+              <tr key={i}>
                 <td>{cliente.nombre}</td>
-                <td>{cliente.email || '-'}</td>
-                <td>{cliente.telefono || '-'}</td>
                 <td>
                   <span className={`estado-badge ${getEstadoClass(cliente.estado)}`}>
                     {cliente.estado}
@@ -176,23 +122,23 @@ function CustomersLeads({ searchQuery }) {
                   <div className="action-buttons">
                     <button 
                       className="action-button edit-button"
-                      onClick={() => prepararEdicion(cliente)}
+                      onClick={() => prepararEdicion(cliente, clienteIndex)}
                     >
                       <span className="button-icon">✏️</span> Editar
                     </button>
                     <button 
                       className="action-button delete-button"
-                      onClick={() => handleBorrarCliente(cliente.id)} // Use cliente.id
+                      onClick={() => borrarCliente(clienteIndex)}
                     >
                       <span className="button-icon">🗑️</span> Eliminar
                     </button>
                   </div>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            );
+          })}
+        </tbody>
+      </table>
 
       <div className="add-lead-form">
         <h3>{editandoId !== null ? 'Editar Cliente/Lead' : 'Agregar Nuevo Cliente/Lead'}</h3>
@@ -202,41 +148,36 @@ function CustomersLeads({ searchQuery }) {
           value={nuevoNombre}
           onChange={(e) => setNuevoNombre(e.target.value)}
         />
-        <input
-          type="email"
-          placeholder="Email del cliente"
-          value={nuevoEmail}
-          onChange={(e) => setNuevoEmail(e.target.value)}
-        />
-        <input
-          type="tel"
-          placeholder="Teléfono del cliente"
-          value={nuevoTelefono}
-          onChange={(e) => setNuevoTelefono(e.target.value)}
-        />
         <select
           value={nuevoEstado}
           onChange={(e) => setNuevoEstado(e.target.value)}
         >
-          <option value="Nuevo Lead">Nuevo Lead</option>
-          <option value="Cliente Activo">Cliente Activo</option>
-          <option value="Negociación">Negociación</option>
-          <option value="Cliente Perdido">Cliente Perdido</option>
+          <option>Nuevo Lead</option>
+          <option>Cliente Activo</option>
+          <option>Negociación</option>
+          <option>Cliente Perdido</option>
         </select>
         <select
           value={nuevoPlan}
           onChange={(e) => setNuevoPlan(e.target.value)}
         >
-          <option value="básico">Básico</option>
-          <option value="pro">Pro</option>
-          <option value="premium">Premium</option>
+          <option value="básico">Plan Básico</option>
+          <option value="pro">Plan Pro</option>
+          <option value="premium">Plan Premium</option>
         </select>
-        <button onClick={handleAgregarOEditarLead}>
-          {editandoId !== null ? 'Guardar Cambios' : 'Agregar Cliente'}
+        <button onClick={agregarOEditarLead}>
+          {editandoIndex !== null ? 'Guardar Cambios' : 'Agregar Cliente/Lead'}
         </button>
-        {editandoId !== null && (
-          <button onClick={resetForm} className="secondary-action">
-            Cancelar Edición
+        {editandoIndex !== null && (
+          <button
+            onClick={() => {
+              setNuevoNombre('');
+              setNuevoEstado('Nuevo Lead');
+              setNuevoPlan('básico');
+              setEditandoIndex(null);
+            }}
+          >
+            Cancelar
           </button>
         )}
       </div>

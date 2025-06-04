@@ -56,18 +56,18 @@ body.dark-mode .leads-table tbody tr:hover {
 }
 
 .estado-nuevo {
-  background-color: var(--info-color-bg, rgba(59, 130, 246, 0.1)); /* Fallback if var not defined */
-  color: var(--info-color, #3b82f6);
+  background-color: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
 }
 
 .estado-activo {
-  background-color: var(--success-color-bg, rgba(16, 185, 129, 0.1));
-  color: var(--success-color, #10b981);
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
 }
 
 .estado-negociacion {
-  background-color: var(--warning-color-bg, rgba(245, 158, 11, 0.1));
-  color: var(--warning-color, #f59e0b);
+  background-color: rgba(192, 38, 211, 0.1);
+  color: #c026d3;
 }
 
 .estado-perdido {
