@@ -26,7 +26,7 @@ $password = $input['password'];
 
 try {
     // Buscar el usuario en la base de datos
-    $stmt = $pdo->prepare("SELECT id, username, nombre_completo, password_hash, email, plan FROM users WHERE username = :username");
+    $stmt = $pdo->prepare("SELECT id, username, password_hash, email FROM users WHERE username = :username");
     $stmt->bindParam(':username', $username);
     $stmt->execute();
     

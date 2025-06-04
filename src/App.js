@@ -15,10 +15,7 @@ function App() {
   const [activeSection, setActiveSection] = useState('dashboard');  const [searchQuery, setSearchQuery] = useState('');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768); // Collapsed by default on mobile
   // const [selectedPlan, setSelectedPlan] = useState('básico'); // Eliminado
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('darkMode');
-    return savedTheme ? JSON.parse(savedTheme) : false;
-  });
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -43,7 +40,18 @@ function App() {
     }
   }, []);
 
-  // Efecto para aplicar el modo oscuro al cargar y cuando cambie
+  // Verificar autenticación al cargar la app
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    
+    if (user && token) {
+      setIsAuthenticated(true);
+      setCurrentUser(JSON.parse(user));
+    }
+  }, []);
+
+  // Efecto para aplicar la clase dark-mode al body y sidebar state en resize
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
@@ -63,6 +71,24 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Función para manejar el login exitoso
+  const handleLogin = (user) => {
+    setIsAuthenticated(true);
+    setCurrentUser(user);
+  };
+
+  // Función para manejar el logout
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+  };
+  // Si no está autenticado, mostrar el componente Login
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   // Función para manejar el login exitoso
   const handleLogin = (user) => {

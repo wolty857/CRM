@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> 253a05e (login v1)
 import './Login.css';
 
 const Login = ({ onLogin }) => {
@@ -6,6 +10,7 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+<<<<<<< HEAD
   const [showPassword, setShowPassword] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('darkMode');
@@ -27,6 +32,8 @@ const Login = ({ onLogin }) => {
     setDarkMode(newDarkMode);
     localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
   };
+=======
+>>>>>>> 253a05e (login v1)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +69,7 @@ const Login = ({ onLogin }) => {
       setLoading(false);
     }
   };
+<<<<<<< HEAD
   return (
     <div className={`login-container ${darkMode ? 'dark-mode' : ''}`}>
       <div className="login-card">
@@ -76,6 +84,14 @@ const Login = ({ onLogin }) => {
               {darkMode ? '☀️' : '🌙'}
             </button>
           </div>
+=======
+
+  return (
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <h2>CRM Wolty</h2>
+>>>>>>> 253a05e (login v1)
           <p>Inicia sesión para continuar</p>
         </div>
         
@@ -98,6 +114,7 @@ const Login = ({ onLogin }) => {
               disabled={loading}
             />
           </div>
+<<<<<<< HEAD
             <div className="form-group">
             <label htmlFor="password">Contraseña</label>
             <div className="password-input-container">
@@ -119,6 +136,20 @@ const Login = ({ onLogin }) => {
                 {showPassword ? "👁️" : "👁️‍🗨️"}
               </button>
             </div>
+=======
+          
+          <div className="form-group">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Ingresa tu contraseña"
+              disabled={loading}
+            />
+>>>>>>> 253a05e (login v1)
           </div>
           
           <button 
