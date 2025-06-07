@@ -6,6 +6,8 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,12 +43,21 @@ const Login = ({ onLogin }) => {
       setLoading(false);
     }
   };
-
   return (
-    <div className="login-container">
+    <div className={`login-container ${darkMode ? 'dark-mode' : ''}`}>
       <div className="login-card">
         <div className="login-header">
-          <h2>CRM Wolty</h2>
+          <div className="header-top">
+            <h2>Cordova IA</h2>
+            <button
+              type="button"
+              className="dark-mode-toggle"
+              onClick={() => setDarkMode(!darkMode)}
+              aria-label="Alternar modo oscuro"
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+          </div>
           <p>Inicia sesión para continuar</p>
         </div>
         
@@ -69,18 +80,27 @@ const Login = ({ onLogin }) => {
               disabled={loading}
             />
           </div>
-          
-          <div className="form-group">
+            <div className="form-group">
             <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Ingresa tu contraseña"
-              disabled={loading}
-            />
+            <div className="password-input-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Ingresa tu contraseña"
+                disabled={loading}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+                disabled={loading}
+              >
+                {showPassword ? "👁️" : "👁️‍🗨️"}
+              </button>
+            </div>
           </div>
           
           <button 
