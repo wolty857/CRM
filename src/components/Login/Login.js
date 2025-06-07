@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 
 const Login = ({ onLogin }) => {
@@ -7,7 +7,26 @@ const Login = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('darkMode');
+    return savedTheme ? JSON.parse(savedTheme) : false;
+  });
+
+  // Efecto para aplicar el modo oscuro al componente Login
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
+
+  // Función para alternar el modo oscuro
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,11 +67,10 @@ const Login = ({ onLogin }) => {
       <div className="login-card">
         <div className="login-header">
           <div className="header-top">
-            <h2>Cordova IA</h2>
-            <button
+            <h2>Cordova IA</h2>            <button
               type="button"
               className="dark-mode-toggle"
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleDarkMode}
               aria-label="Alternar modo oscuro"
             >
               {darkMode ? '☀️' : '🌙'}
