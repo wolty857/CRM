@@ -297,12 +297,165 @@ body.dark-mode .search-input {
   position: sticky;
   top: 0;
   z-index: 900;
+  margin-bottom: 2rem;
 }
 
 .content-header h1 {
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-color);
+}
+
+/* Estilos para la información del usuario */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-color);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.user-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.user-plan {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.user-plan.básico {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.user-plan.premium {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.user-plan.empresarial {
+  background-color: #e8f5e8;
+  color: #388e3c;
+}
+
+.dark-mode .user-plan.básico {
+  background-color: rgba(25, 118, 210, 0.2);
+  color: #90caf9;
+}
+
+.dark-mode .user-plan.premium {
+  background-color: rgba(123, 31, 162, 0.2);
+  color: #ce93d8;
+}
+
+.dark-mode .user-plan.empresarial {
+  background-color: rgba(56, 142, 60, 0.2);
+  color: #a5d6a7;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #ff5757, #ff3838);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #ff3838, #ff1919);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 87, 87, 0.3);
+}
+
+.dark-mode .logout-btn {
+  background: linear-gradient(135deg, #e53e3e, #c53030);
+}
+
+.dark-mode .logout-btn:hover {
+  background: linear-gradient(135deg, #c53030, #9c2626);
+}
+
+.header-left {
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: var(--transition);
+}
+
+.user-info:hover {
+  background-color: var(--primary-hover-light);
+  border-color: var(--primary-color);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-plan {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: var(--transition);
+  color: var(--text-light);
+}
+
+.logout-button:hover {
+  background-color: var(--danger-color);
+  color: white;
+  transform: scale(1.1);
 }
 
 .quick-actions {

@@ -12,11 +12,13 @@ import Login from './components/Login/Login'; // Importar el componente Login
 import { ClientesProvider } from './context/ClientesContext';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('dashboard');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activeSection, setActiveSection] = useState('dashboard');  const [searchQuery, setSearchQuery] = useState('');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768); // Collapsed by default on mobile
   // const [selectedPlan, setSelectedPlan] = useState('básico'); // Eliminado
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('darkMode');
+    return savedTheme ? JSON.parse(savedTheme) : false;
+  });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -24,12 +26,12 @@ function App() {
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
-
   // Función para alternar el modo oscuro
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
   };
-
   // Verificar autenticación al cargar la app
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -41,14 +43,17 @@ function App() {
     }
   }, []);
 
-  // Efecto para aplicar la clase dark-mode al body y sidebar state en resize
+  // Efecto para aplicar el modo oscuro al cargar y cuando cambie
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
     } else {
       document.body.classList.remove('dark-mode');
     }
+  }, [isDarkMode]);
 
+  // Efecto para manejar el resize de la ventana
+  useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
         setSidebarCollapsed(true);
@@ -57,7 +62,7 @@ function App() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isDarkMode]);
+  }, []);
 
   // Función para manejar el login exitoso
   const handleLogin = (user) => {
@@ -228,31 +233,47 @@ function App() {
         </aside>
         
         {/* Área principal de contenido */}
-        <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>
-          <header className="content-header">
-            <h1>{activeSection === 'dashboard' ? 'Panel de Control' : 
-                activeSection === 'customers' ? 'Clientes y Leads' :
-                activeSection === 'sales' ? 'Pipeline de Ventas' :
-                activeSection === 'agenda' ? 'Agenda y Actividades' :
-                activeSection === 'agentes' ? 'Agentes Inteligentes' :
-                'Gestión de Datos'}</h1>
+        <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>          <header className="content-header">
+            <div className="header-left">
+              <h1>{activeSection === 'dashboard' ? 'Panel de Control' : 
+                  activeSection === 'customers' ? 'Clientes y Leads' :
+                  activeSection === 'sales' ? 'Pipeline de Ventas' :
+                  activeSection === 'agenda' ? 'Agenda y Actividades' :
+                  activeSection === 'agentes' ? 'Agentes Inteligentes' :
+                  'Gestión de Datos'}</h1>
+            </div>
             
-            <div className="quick-actions">
-              {activeSection === 'customers' && (
-                <button className="action-button">
-                  <span className="action-icon">+</span> Nuevo Cliente
+            <div className="header-right">
+              <div className="user-info">
+                <div className="user-details">
+                  <span className="user-name">
+                    👤 {currentUser?.nombre_completo || currentUser?.username || 'Usuario'}
+                  </span>
+                  <span className="user-plan">
+                    💎 Plan {currentUser?.plan ? currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1) : 'Básico'}
+                  </span>
+                </div>                <button className="logout-btn" onClick={handleLogout}>
+                  Cerrar Sesión
                 </button>
-              )}
-              {activeSection === 'agenda' && (
-                <button className="action-button">
-                  <span className="action-icon">+</span> Nueva Tarea
-                </button>
-              )}
-              {activeSection === 'sales' && (
-                <button className="action-button">
-                  <span className="action-icon">+</span> Nueva Oportunidad
-                </button>
-              )}
+              </div>
+              
+              <div className="quick-actions">
+                {activeSection === 'customers' && (
+                  <button className="action-button">
+                    <span className="action-icon">+</span> Nuevo Cliente
+                  </button>
+                )}
+                {activeSection === 'agenda' && (
+                  <button className="action-button">
+                    <span className="action-icon">+</span> Nueva Tarea
+                  </button>
+                )}
+                {activeSection === 'sales' && (
+                  <button className="action-button">
+                    <span className="action-icon">+</span> Nueva Oportunidad
+                  </button>
+                )}
+              </div>
             </div>
           </header>
           
