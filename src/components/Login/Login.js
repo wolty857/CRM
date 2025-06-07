@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-=======
+
 import React, { useState } from 'react';
->>>>>>> 253a05e (login v1)
 import './Login.css';
 
 const Login = ({ onLogin }) => {
@@ -10,30 +7,6 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-<<<<<<< HEAD
-  const [showPassword, setShowPassword] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('darkMode');
-    return savedTheme ? JSON.parse(savedTheme) : false;
-  });
-
-  // Efecto para aplicar el modo oscuro al componente Login
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [darkMode]);
-
-  // Función para alternar el modo oscuro
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
-  };
-=======
->>>>>>> 253a05e (login v1)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,29 +42,13 @@ const Login = ({ onLogin }) => {
       setLoading(false);
     }
   };
-<<<<<<< HEAD
-  return (
-    <div className={`login-container ${darkMode ? 'dark-mode' : ''}`}>
-      <div className="login-card">
-        <div className="login-header">
-          <div className="header-top">
-            <h2>Cordova IA</h2>            <button
-              type="button"
-              className="dark-mode-toggle"
-              onClick={toggleDarkMode}
-              aria-label="Alternar modo oscuro"
-            >
-              {darkMode ? '☀️' : '🌙'}
-            </button>
-          </div>
-=======
+
 
   return (
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
           <h2>CRM Wolty</h2>
->>>>>>> 253a05e (login v1)
           <p>Inicia sesión para continuar</p>
         </div>
         
@@ -114,29 +71,7 @@ const Login = ({ onLogin }) => {
               disabled={loading}
             />
           </div>
-<<<<<<< HEAD
-            <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
-            <div className="password-input-container">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Ingresa tu contraseña"
-                disabled={loading}
-              />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
-                disabled={loading}
-              >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
-              </button>
-            </div>
-=======
+
           
           <div className="form-group">
             <label htmlFor="password">Contraseña</label>
@@ -149,7 +84,7 @@ const Login = ({ onLogin }) => {
               placeholder="Ingresa tu contraseña"
               disabled={loading}
             />
->>>>>>> 253a05e (login v1)
+
           </div>
           
           <button 
