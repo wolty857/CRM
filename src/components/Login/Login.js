@@ -32,7 +32,7 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     setLoading(true);
     setError('');    try {
-      const response = await fetch('http://localhost/dashboard/CRM%20Wolty/CRM/api/auth/login.php', {
+      const response = await fetch('http://localhost/CRM/api/auth/login.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
