@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-06-2025 a las 22:33:38
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Tiempo de generación: 08-06-2025 a las 07:39:08
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -44,15 +44,17 @@ CREATE TABLE `clientes_leads` (
   `id_cliente` int(11) NOT NULL,
   `nombre_cliente` text NOT NULL,
   `id_estado` int(11) NOT NULL,
-  `id_planes` int(11) NOT NULL
+  `id_planes` int(11) NOT NULL,
+  `email_cliente` varchar(255) DEFAULT NULL,
+  `telefono_cliente` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `clientes_leads`
 --
 
-INSERT INTO `clientes_leads` (`id_cliente`, `nombre_cliente`, `id_estado`, `id_planes`) VALUES
-(1, 'Jorge Riel', 1, 1);
+INSERT INTO `clientes_leads` (`id_cliente`, `nombre_cliente`, `id_estado`, `id_planes`, `email_cliente`, `telefono_cliente`) VALUES
+(1, 'Jorge Riel', 1, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -113,14 +115,22 @@ INSERT INTO `planes` (`id_planes`, `Tipo_plan`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL UNIQUE,
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `nombre_completo` varchar(255) DEFAULT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `email` varchar(255) DEFAULT NULL UNIQUE,
+  `email` varchar(255) DEFAULT NULL,
+  `plan` enum('básico','premium','empresarial') DEFAULT 'básico',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `nombre_completo`, `password_hash`, `email`, `plan`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'Administrador del Sistema', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@crm.com', 'básico', '2025-06-04 22:01:02', '2025-06-08 04:26:24');
 
 --
 -- Índices para tablas volcadas
@@ -159,6 +169,14 @@ ALTER TABLE `planes`
   ADD PRIMARY KEY (`id_planes`);
 
 --
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -191,6 +209,12 @@ ALTER TABLE `gestion_datos`
 --
 ALTER TABLE `planes`
   MODIFY `id_planes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
