@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './CustomersLeads.css';
-import { useClientes } from '../context/ClientesContext';
 
 function CustomersLeads({ searchQuery }) {
   const { clientes, agregarCliente, borrarCliente, modificarCliente } = useClientes();
@@ -19,7 +19,7 @@ function CustomersLeads({ searchQuery }) {
       );
       setClientesFiltrados(filtrados);
     } else {
-      setClientesFiltrados(clientes);
+      setClientesFiltrados(clientes); // This will be an empty array initially
     }
   }, [searchQuery, clientes]);
 
@@ -28,7 +28,7 @@ function CustomersLeads({ searchQuery }) {
     const cliente = { 
       nombre: nuevoNombre, 
       estado: nuevoEstado,
-      plan: nuevoPlan
+      plan: nuevoPlan,
     };
 
     if (editandoIndex !== null) {
@@ -49,26 +49,24 @@ function CustomersLeads({ searchQuery }) {
     setNuevoPlan(cliente.plan || 'básico');
     setEditandoIndex(index);
   };
-  
-  // Función para generar la clase CSS basada en el estado
+
   const getEstadoClass = (estado) => {
-    switch(estado) {
-      case 'Nuevo Lead':
-        return 'estado-nuevo';
-      case 'Cliente Activo':
-        return 'estado-activo';
-      case 'Negociación':
-        return 'estado-negociacion';
+    switch (estado) {
+      case 'Frío':
+        return 'estado-frio';
+      case 'Tibio':
+        return 'estado-tibio';
+      case 'Caliente':
+        return 'estado-caliente';
       case 'Cliente Perdido':
         return 'estado-perdido';
       default:
         return '';
     }
   };
-  
-  // Función para generar la clase CSS basada en el plan
+
   const getPlanClass = (plan) => {
-    switch(plan) {
+    switch (plan) {
       case 'básico':
         return 'plan-basico';
       case 'pro':
@@ -79,6 +77,14 @@ function CustomersLeads({ searchQuery }) {
         return 'plan-basico';
     }
   };
+
+  if (loading) {
+    return <div className="component-card customers-leads"><p>Cargando clientes...</p></div>;
+  }
+
+  if (error) {
+    return <div className="component-card customers-leads"><p className="error-message">Error al cargar datos: {error}</p></div>;
+  }
 
   return (
     <div className="component-card customers-leads">
@@ -135,6 +141,7 @@ function CustomersLeads({ searchQuery }) {
       </table>
 
       <div className="add-lead-form">
+        <h3>{editandoId !== null ? 'Editar Cliente/Lead' : 'Agregar Nuevo Cliente/Lead'}</h3>
         <input
           type="text"
           placeholder="Nombre del cliente"

@@ -1,59 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import './SalesPipeline.css';
 
-// Datos simulados para el pipeline
-const etapasData = [
-  { 
-    nombre: 'Prospecto', 
-    icono: '🔍', 
-    cantidad: 32, 
-    valor: 48000,
-    porcentaje: 85 
-  },
-  { 
-    nombre: 'Contactado', 
-    icono: '📞', 
-    cantidad: 24, 
-    valor: 36000,
-    porcentaje: 65 
-  },
-  { 
-    nombre: 'Negociación', 
-    icono: '📝', 
-    cantidad: 12, 
-    valor: 18000,
-    porcentaje: 40 
-  },
-  { 
-    nombre: 'Cierre', 
-    icono: '🏆', 
-    cantidad: 8, 
-    valor: 12000,
-    porcentaje: 25 
-  }
-];
+// Los datos simulados para el pipeline han sido eliminados.
+// La data vendrá de una fuente externa (ej. API / DB)
 
 function SalesPipeline() {
-  const [etapas, setEtapas] = useState(etapasData);
+  const [etapas, setEtapas] = useState([]); // Inicializar con array vacío
   
-  // Simulamos cambios aleatorios en los datos para demostración
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const nuevasEtapas = etapas.map(etapa => ({
-        ...etapa,
-        cantidad: Math.max(5, etapa.cantidad + Math.floor(Math.random() * 5) - 2),
-        valor: Math.max(6000, etapa.valor + Math.floor(Math.random() * 2000) - 1000),
-        porcentaje: Math.max(10, Math.min(95, etapa.porcentaje + Math.floor(Math.random() * 10) - 5))
-      }));
-      
-      setEtapas(nuevasEtapas);
-    }, 8000);
-    
-    return () => clearInterval(interval);
-  }, [etapas]);
+  // La lógica para cargar y actualizar etapas vendrá de una fuente externa.
+  // Ejemplo de cómo podrías cargar datos (deberás adaptarlo):
+  // useEffect(() => {
+  //   fetch('/api/pipeline-stages') // Reemplaza con tu endpoint real
+  //     .then(response => response.json())
+  //     .then(data => setEtapas(data))
+  //     .catch(error => console.error('Error fetching pipeline data:', error));
+  // }, []);
   
-  // Función para formatear números con separadores de miles
   const formatNumber = (num) => {
+    if (typeof num !== 'number' || isNaN(num)) return '0'; // Manejar casos donde num no es un número o es NaN
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
@@ -61,24 +25,28 @@ function SalesPipeline() {
     <div className="component-card sales-pipeline">
       <h2>Pipeline de Ventas</h2>
       <div className="pipeline-stages">
-        {etapas.map((etapa, index) => (
-          <div key={index} className="pipeline-stage">
-            <div className="stage-header">
-              <div className="stage-title">
-                <span>{etapa.icono}</span>
-                {etapa.nombre}
-                <span className="stage-count">{etapa.cantidad}</span>
+        {etapas.length === 0 ? (
+          <p>No hay datos de pipeline disponibles.</p> 
+        ) : (
+          etapas.map((etapa, index) => (
+            <div key={index} className="pipeline-stage">
+              <div className="stage-header">
+                <div className="stage-title">
+                  <span>{etapa.icono || '📊'}</span>
+                  {etapa.nombre || 'Etapa Desconocida'}
+                  <span className="stage-count">{etapa.cantidad !== undefined ? etapa.cantidad : 0}</span>
+                </div>
+                <div className="stage-value">${formatNumber(etapa.valor)}</div> {/* No es necesario || 0 si se asegura que valor es un número */}
               </div>
-              <div className="stage-value">${formatNumber(etapa.valor)}</div>
+              <div className="stage-progress">
+                <div 
+                  className="progress-bar" 
+                  style={{ width: `${etapa.porcentaje || 0}%` }}
+                ></div>
+              </div>
             </div>
-            <div className="stage-progress">
-              <div 
-                className="progress-bar" 
-                style={{ width: `${etapa.porcentaje}%` }}
-              ></div>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

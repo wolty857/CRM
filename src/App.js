@@ -8,18 +8,79 @@ import CustomersLeads from './components/CustomersLeads';
 import AgendaActivities from './components/AgendaActivities';
 import SalesPipeline from './components/SalesPipeline';
 import DataManagement from './components/DataManagement'; // Importar el componente DataManagement
+import Login from './components/Login/Login'; // Importar el componente Login
 import { ClientesProvider } from './context/ClientesContext';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('dashboard');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState('básico'); // Puede ser básico, pro o premium
+  const [activeSection, setActiveSection] = useState('dashboard');  const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768); // Collapsed by default on mobile
+  // const [selectedPlan, setSelectedPlan] = useState('básico'); // Eliminado
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('darkMode');
+    return savedTheme ? JSON.parse(savedTheme) : false;
+  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Función para alternar la barra lateral
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
+  // Función para alternar el modo oscuro
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
+  };
+  // Verificar autenticación al cargar la app
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    
+    if (user && token) {
+      setIsAuthenticated(true);
+      setCurrentUser(JSON.parse(user));
+    }
+  }, []);
+
+  // Efecto para aplicar el modo oscuro al cargar y cuando cambie
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [isDarkMode]);
+
+  // Efecto para manejar el resize de la ventana
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarCollapsed(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Función para manejar el login exitoso
+  const handleLogin = (user) => {
+    setIsAuthenticated(true);
+    setCurrentUser(user);
+  };
+
+  // Función para manejar el logout
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+  };
+  // Si no está autenticado, mostrar el componente Login
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   // Función para renderizar el contenido principal basado en la sección activa
   const renderMainContent = () => {
@@ -40,21 +101,21 @@ function App() {
       case 'data':
         return <DataManagement />;
       case 'agentes':
-        return <AgentesIA plan={selectedPlan} />;
+        return <AgentesIA />; // Eliminado prop plan
       default:
         return <div className="welcome-section">Selecciona una sección del menú lateral</div>;
     }
   };
 
   // Componente para mostrar los agentes de IA
-  const AgentesIA = ({ plan }) => {
+  const AgentesIA = () => { // Eliminado prop plan
     return (
       <div className="component-card agentes-ia">
         <h2>Agentes Inteligentes</h2>
         
-        <div className="plan-badge">
+        {/* <div className="plan-badge"> // Eliminado plan badge
           <span>Plan {plan.charAt(0).toUpperCase() + plan.slice(1)}</span>
-        </div>
+        </div> */}
         
         <div className="agentes-container">
           <div className="agente-card">
@@ -108,10 +169,9 @@ function App() {
 
   return (
     <ClientesProvider>
-      <div className="crm-app">
-        {/* Botón para alternar la barra lateral en móviles */}
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
-          {sidebarCollapsed ? '☰' : '✕'}
+      <div className={`crm-app ${isDarkMode ? 'dark-mode' : ''}`}>
+        <button className={`sidebar-toggle ${!sidebarCollapsed ? 'open' : ''}`} onClick={toggleSidebar}>
+          <span className="hamburger-icon"></span>
         </button>
         
         {/* Sidebar deslizable */}
@@ -130,29 +190,7 @@ function App() {
             />
           </div>
           
-          <div className="plan-selector">
-            <div className="plan-title">Plan Actual:</div>
-            <div className="plan-options">
-              <button 
-                className={`plan-option ${selectedPlan === 'básico' ? 'active' : ''}`}
-                onClick={() => setSelectedPlan('básico')}
-              >
-                Básico
-              </button>
-              <button 
-                className={`plan-option ${selectedPlan === 'pro' ? 'active' : ''}`}
-                onClick={() => setSelectedPlan('pro')}
-              >
-                Pro
-              </button>
-              <button 
-                className={`plan-option ${selectedPlan === 'premium' ? 'active' : ''}`}
-                onClick={() => setSelectedPlan('premium')}
-              >
-                Premium
-              </button>
-            </div>
-          </div>
+          {/* Eliminado el selector de planes */}
           
           <nav className="sidebar-nav">
             <button 
@@ -195,31 +233,47 @@ function App() {
         </aside>
         
         {/* Área principal de contenido */}
-        <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>
-          <header className="content-header">
-            <h1>{activeSection === 'dashboard' ? 'Panel de Control' : 
-                activeSection === 'customers' ? 'Clientes y Leads' :
-                activeSection === 'sales' ? 'Pipeline de Ventas' :
-                activeSection === 'agenda' ? 'Agenda y Actividades' :
-                activeSection === 'agentes' ? 'Agentes Inteligentes' :
-                'Gestión de Datos'}</h1>
+        <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>          <header className="content-header">
+            <div className="header-left">
+              <h1>{activeSection === 'dashboard' ? 'Panel de Control' : 
+                  activeSection === 'customers' ? 'Clientes y Leads' :
+                  activeSection === 'sales' ? 'Pipeline de Ventas' :
+                  activeSection === 'agenda' ? 'Agenda y Actividades' :
+                  activeSection === 'agentes' ? 'Agentes Inteligentes' :
+                  'Gestión de Datos'}</h1>
+            </div>
             
-            <div className="quick-actions">
-              {activeSection === 'customers' && (
-                <button className="action-button">
-                  <span className="action-icon">+</span> Nuevo Cliente
+            <div className="header-right">
+              <div className="user-info">
+                <div className="user-details">
+                  <span className="user-name">
+                    👤 {currentUser?.nombre_completo || currentUser?.username || 'Usuario'}
+                  </span>
+                  <span className="user-plan">
+                    💎 Plan {currentUser?.plan ? currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1) : 'Básico'}
+                  </span>
+                </div>                <button className="logout-btn" onClick={handleLogout}>
+                  Cerrar Sesión
                 </button>
-              )}
-              {activeSection === 'agenda' && (
-                <button className="action-button">
-                  <span className="action-icon">+</span> Nueva Tarea
-                </button>
-              )}
-              {activeSection === 'sales' && (
-                <button className="action-button">
-                  <span className="action-icon">+</span> Nueva Oportunidad
-                </button>
-              )}
+              </div>
+              
+              <div className="quick-actions">
+                {activeSection === 'customers' && (
+                  <button className="action-button">
+                    <span className="action-icon">+</span> Nuevo Cliente
+                  </button>
+                )}
+                {activeSection === 'agenda' && (
+                  <button className="action-button">
+                    <span className="action-icon">+</span> Nueva Tarea
+                  </button>
+                )}
+                {activeSection === 'sales' && (
+                  <button className="action-button">
+                    <span className="action-icon">+</span> Nueva Oportunidad
+                  </button>
+                )}
+              </div>
             </div>
           </header>
           
@@ -228,9 +282,14 @@ function App() {
           </div>
           
           <footer className="content-footer">
-            <p>© 2023 Cordova IA - Inteligencia Artificial para tu Negocio</p>
+            <p>© {new Date().getFullYear()} Cordova IA - Inteligencia Artificial para tu Negocio</p>
           </footer>
         </main>
+
+        {/* Botón para cambiar modo oscuro */}
+        <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+          {isDarkMode ? '☀️' : '🌙'}
+        </button>
       </div>
     </ClientesProvider>
   );
