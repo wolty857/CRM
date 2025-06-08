@@ -256,24 +256,6 @@ function App() {
                   Cerrar Sesión
                 </button>
               </div>
-              
-              <div className="quick-actions">
-                {activeSection === 'customers' && (
-                  <button className="action-button">
-                    <span className="action-icon">+</span> Nuevo Cliente
-                  </button>
-                )}
-                {activeSection === 'agenda' && (
-                  <button className="action-button">
-                    <span className="action-icon">+</span> Nueva Tarea
-                  </button>
-                )}
-                {activeSection === 'sales' && (
-                  <button className="action-button">
-                    <span className="action-icon">+</span> Nueva Oportunidad
-                  </button>
-                )}
-              </div>
             </div>
           </header>
           
