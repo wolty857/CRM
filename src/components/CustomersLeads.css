@@ -1,31 +1,244 @@
-.add-lead-form {
-  margin-top: 1rem;
+.customers-leads {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  height: 100%;
+}
+
+.leads-table {
+  width: 100%;
+  border-collapse: separate; /* Use separate for border-radius on table */
+  border-spacing: 0;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  text-align: left;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden; /* Ensures border-radius is respected by children */
+  background-color: var(--card-background); /* Table background */
+}
+
+.leads-table th,
+.leads-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.leads-table th {
+  font-weight: 600;
+  background-color: var(--background-color); /* Header background */
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.leads-table tr:last-child td {
+  border-bottom: none;
+}
+
+.leads-table tbody tr:hover {
+  background-color: var(--primary-hover-light);
+}
+
+body.dark-mode .leads-table tbody tr:hover {
+  background-color: var(--primary-hover-dark);
+}
+
+/* Estado de leads con código de colores */
+.estado-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 100px;
+}
+
+.estado-nuevo {
+  background-color: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+.estado-activo {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.estado-negociacion {
+  background-color: rgba(192, 38, 211, 0.1);
+  color: #c026d3;
+}
+
+.estado-perdido {
+  background-color: var(--danger-color-bg, rgba(239, 68, 68, 0.1));
+  color: var(--danger-color, #ef4444);
+}
+
+/* Badges de plan */
+.plan-badge-small {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 80px;
+}
+
+.plan-basico {
+  background: var(--primary-hover-light);
+  color: var(--primary-color);
+}
+
+.plan-pro {
+  background: var(--success-color-bg, rgba(16, 185, 129, 0.15));
+  color: var(--success-color, #10b981);
+}
+
+.plan-premium {
+  background: var(--accent-color-bg, rgba(236, 72, 153, 0.15));
+  color: var(--accent-color, #ec4899);
+}
+
+/* Botones de acción */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.button-icon {
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.edit-button {
+  color: var(--primary-color);
+}
+
+.edit-button:hover {
+  background-color: var(--primary-hover-light);
+}
+
+body.dark-mode .edit-button:hover {
+  background-color: var(--primary-hover-dark);
+}
+
+.delete-button {
+  color: var(--danger-color);
+}
+
+.delete-button:hover {
+  background-color: var(--danger-color-bg, rgba(239, 68, 68, 0.1));
+}
+
+/* Formulario para agregar/editar */
+.add-lead-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  margin-top: auto;
+  border: 1px solid var(--border-color);
 }
 
 .add-lead-form input,
 .add-lead-form select {
-  padding: 8px;
-  font-size: 1rem;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-background);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 200px;
+  transition: var(--transition);
+}
+
+.add-lead-form input:focus,
+.add-lead-form select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-hover-light);
+}
+
+body.dark-mode .add-lead-form input:focus,
+body.dark-mode .add-lead-form select:focus {
+  box-shadow: 0 0 0 3px var(--primary-hover-dark);
 }
 
 .add-lead-form button {
-  padding: 6px 12px;
-  cursor: pointer;
-  background-color: #0b6efd;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 6px rgba(124, 58, 237, 0.2);
 }
 
 .add-lead-form button:hover {
-  background-color: #084cdf;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(124, 58, 237, 0.25);
 }
 
-.leads-table td button {
-  margin-right: 5px;
-  padding: 4px 8px;
-  font-size: 0.8rem;
+/* Cancel button or secondary action button */
+.add-lead-form button.secondary-action {
+  background: var(--card-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.add-lead-form button.secondary-action:hover {
+  background: var(--background-color);
+  border-color: var(--text-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.07);
+}
+
+/* Placeholder text color for inputs */
+.add-lead-form input::placeholder {
+  color: var(--text-light);
+  opacity: 0.7;
+}
+
+.add-lead-form select {
+  color: var(--text-color);
+}
+
+/* Ensure select options are readable in dark mode - browser dependent */
+body.dark-mode .add-lead-form select option {
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+
+/* Message when no data */
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-light);
+  font-size: 1rem;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 24px;
+  background-color: var(--background-color);
 }

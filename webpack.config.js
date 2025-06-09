@@ -41,7 +41,7 @@ module.exports = {
       directory: path.join(__dirname, 'dist'), // Servir archivos estáticos desde dist
     },
     compress: true,
-    port: 3000, // Puerto cambiado a 3001
+    port: 3001, // Puerto cambiado a 3001
     // historyApiFallback: true, // Para manejar rutas de React Router (si lo usas después)
   },
   resolve: {

@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './CustomersLeads.css';
-import { useClientes } from '../context/ClientesContext';
 
-function CustomersLeads() {
+function CustomersLeads({ searchQuery }) {
   const { clientes, agregarCliente, borrarCliente, modificarCliente } = useClientes();
 
   const [nuevoNombre, setNuevoNombre] = useState('');
   const [nuevoEstado, setNuevoEstado] = useState('Nuevo Lead');
-
+  const [nuevoPlan, setNuevoPlan] = useState('básico');
+  const [clientesFiltrados, setClientesFiltrados] = useState(clientes);
   const [editandoIndex, setEditandoIndex] = useState(null);
+
+  // Filtrar clientes cuando cambia el searchQuery
+  useEffect(() => {
+    if (searchQuery) {
+      const filtrados = clientes.filter(cliente => 
+        cliente.nombre.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setClientesFiltrados(filtrados);
+    } else {
+      setClientesFiltrados(clientes); // This will be an empty array initially
+    }
+  }, [searchQuery, clientes]);
 
   const agregarOEditarLead = () => {
     if (!nuevoNombre) return;
-    const cliente = { nombre: nuevoNombre, estado: nuevoEstado };
+    const cliente = { 
+      nombre: nuevoNombre, 
+      estado: nuevoEstado,
+      plan: nuevoPlan,
+    };
 
     if (editandoIndex !== null) {
       modificarCliente(editandoIndex, cliente);
@@ -23,13 +40,51 @@ function CustomersLeads() {
 
     setNuevoNombre('');
     setNuevoEstado('Nuevo Lead');
+    setNuevoPlan('básico');
   };
 
   const prepararEdicion = (cliente, index) => {
     setNuevoNombre(cliente.nombre);
     setNuevoEstado(cliente.estado);
+    setNuevoPlan(cliente.plan || 'básico');
     setEditandoIndex(index);
   };
+
+  const getEstadoClass = (estado) => {
+    switch (estado) {
+      case 'Frío':
+        return 'estado-frio';
+      case 'Tibio':
+        return 'estado-tibio';
+      case 'Caliente':
+        return 'estado-caliente';
+      case 'Cliente Perdido':
+        return 'estado-perdido';
+      default:
+        return '';
+    }
+  };
+
+  const getPlanClass = (plan) => {
+    switch (plan) {
+      case 'básico':
+        return 'plan-basico';
+      case 'pro':
+        return 'plan-pro';
+      case 'premium':
+        return 'plan-premium';
+      default:
+        return 'plan-basico';
+    }
+  };
+
+  if (loading) {
+    return <div className="component-card customers-leads"><p>Cargando clientes...</p></div>;
+  }
+
+  if (error) {
+    return <div className="component-card customers-leads"><p className="error-message">Error al cargar datos: {error}</p></div>;
+  }
 
   return (
     <div className="component-card customers-leads">
@@ -40,24 +95,53 @@ function CustomersLeads() {
           <tr>
             <th>Nombre</th>
             <th>Estado</th>
+            <th>Plan</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {clientes.map((cliente, i) => (
-            <tr key={i}>
-              <td>{cliente.nombre}</td>
-              <td>{cliente.estado}</td>
-              <td>
-                <button onClick={() => prepararEdicion(cliente, i)}>✏️ Editar</button>
-                <button onClick={() => borrarCliente(i)}>🗑️ Borrar</button>
-              </td>
-            </tr>
-          ))}
+          {clientesFiltrados.map((cliente, i) => {
+            const clienteIndex = clientes.findIndex(c => c === cliente);
+            return (
+              <tr key={i}>
+                <td>{cliente.nombre}</td>
+                <td>
+                  <span className={`estado-badge ${getEstadoClass(cliente.estado)}`}>
+                    {cliente.estado}
+                  </span>
+                </td>
+                <td>
+                  <span className={`plan-badge-small ${getPlanClass(cliente.plan || 'básico')}`}>
+                    {cliente.plan ? 
+                      cliente.plan.charAt(0).toUpperCase() + cliente.plan.slice(1) : 
+                      'Básico'
+                    }
+                  </span>
+                </td>
+                <td>
+                  <div className="action-buttons">
+                    <button 
+                      className="action-button edit-button"
+                      onClick={() => prepararEdicion(cliente, clienteIndex)}
+                    >
+                      <span className="button-icon">✏️</span> Editar
+                    </button>
+                    <button 
+                      className="action-button delete-button"
+                      onClick={() => borrarCliente(clienteIndex)}
+                    >
+                      <span className="button-icon">🗑️</span> Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
       <div className="add-lead-form">
+        <h3>{editandoId !== null ? 'Editar Cliente/Lead' : 'Agregar Nuevo Cliente/Lead'}</h3>
         <input
           type="text"
           placeholder="Nombre del cliente"
@@ -73,6 +157,14 @@ function CustomersLeads() {
           <option>Negociación</option>
           <option>Cliente Perdido</option>
         </select>
+        <select
+          value={nuevoPlan}
+          onChange={(e) => setNuevoPlan(e.target.value)}
+        >
+          <option value="básico">Plan Básico</option>
+          <option value="pro">Plan Pro</option>
+          <option value="premium">Plan Premium</option>
+        </select>
         <button onClick={agregarOEditarLead}>
           {editandoIndex !== null ? 'Guardar Cambios' : 'Agregar Cliente/Lead'}
         </button>
@@ -81,6 +173,7 @@ function CustomersLeads() {
             onClick={() => {
               setNuevoNombre('');
               setNuevoEstado('Nuevo Lead');
+              setNuevoPlan('básico');
               setEditandoIndex(null);
             }}
           >

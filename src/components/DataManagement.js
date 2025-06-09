@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './DataManagement.css';
 
 function DataManagement() {
-  const [datos, setDatos] = useState(['Cliente 1', 'Cliente 2']);
+  const [datos, setDatos] = useState([]);
   const [nuevo, setNuevo] = useState('');
 
   const agregar = () => {
