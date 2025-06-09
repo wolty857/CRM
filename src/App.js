@@ -32,7 +32,6 @@ function App() {
     setIsDarkMode(newDarkMode);
     localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
   };
-
   // Verificar autenticación al cargar la app
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -44,6 +43,20 @@ function App() {
     }
   }, []);
 
+<<<<<<< HEAD
+  // Verificar autenticación al cargar la app
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    
+    if (user && token) {
+      setIsAuthenticated(true);
+      setCurrentUser(JSON.parse(user));
+    }
+  }, []);
+
+=======
+>>>>>>> Fran
   // Efecto para aplicar el modo oscuro al cargar y cuando cambie
   useEffect(() => {
     if (isDarkMode) {

@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 header("Access-Control-Allow-Origin: http://localhost:3001*"); // o "*" si es solo para desarrollo
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -9,6 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 
+=======
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+>>>>>>> Fran
 
 // Incluir la conexión a la base de datos
 require_once '../db.php';
