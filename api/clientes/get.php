@@ -1,11 +1,10 @@
 <?php
-// Permite que React (puerto 3001) consulte tu API
-header("Access-Control-Allow-Origin: http://localhost:3001");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    exit; // responde OK a preflight
-}
+
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Headers: Content-Type');
+
 
 try {
     require_once '../db.php';    $sql = "SELECT c.id_cliente, c.nombre_cliente, c.email_cliente as email, c.telefono_cliente as telefono, e.tipo_estado, p.Tipo_plan 
