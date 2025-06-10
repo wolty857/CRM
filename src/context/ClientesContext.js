@@ -72,8 +72,7 @@ export function ClientesProvider({ children }) {
       throw err;
     }
   };
-  
-  const estadisticasPlanes = () => {
+    const estadisticasPlanes = () => {
     const stats = {
       basico: 0,
       pro: 0,
@@ -82,9 +81,9 @@ export function ClientesProvider({ children }) {
     };
     
     clientes.forEach(cliente => {
-      if (cliente.plan === 'básico') stats.basico++;
-      else if (cliente.plan === 'pro') stats.pro++;
-      else if (cliente.plan === 'premium') stats.premium++;
+      if (cliente.plan === 'Plan Básico') stats.basico++;
+      else if (cliente.plan === 'Plan Pro') stats.pro++;
+      else if (cliente.plan === 'Plan Premium') stats.premium++;
     });
     
     return stats;
