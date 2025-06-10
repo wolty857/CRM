@@ -11,12 +11,11 @@ function CustomersLeads({ searchQuery }) {
     loading, 
     error 
   } = useClientes();
-
   const [nuevoNombre, setNuevoNombre] = useState('');
   const [nuevoEmail, setNuevoEmail] = useState(''); // Added email
   const [nuevoTelefono, setNuevoTelefono] = useState(''); // Added phone
-  const [nuevoEstado, setNuevoEstado] = useState('Nuevo Lead');
-  const [nuevoPlan, setNuevoPlan] = useState('básico');
+  const [nuevoEstado, setNuevoEstado] = useState('Frío');
+  const [nuevoPlan, setNuevoPlan] = useState('Plan Básico');
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
   const [editandoId, setEditandoId] = useState(null); // Changed from index to ID
 
@@ -36,9 +35,8 @@ function CustomersLeads({ searchQuery }) {
   const resetForm = () => {
     setNuevoNombre('');
     setNuevoEmail('');
-    setNuevoTelefono('');
-    setNuevoEstado('Nuevo Lead');
-    setNuevoPlan('básico');
+    setNuevoTelefono('');    setNuevoEstado('Frío');
+    setNuevoPlan('Plan Básico');
     setEditandoId(null);
   };
 
@@ -73,7 +71,7 @@ function CustomersLeads({ searchQuery }) {
     setNuevoEmail(cliente.email || '');
     setNuevoTelefono(cliente.telefono || '');
     setNuevoEstado(cliente.estado);
-    setNuevoPlan(cliente.plan || 'básico');
+    setNuevoPlan(cliente.plan || 'Plan Básico');
     setEditandoId(cliente.id);
   };
 
@@ -86,16 +84,15 @@ function CustomersLeads({ searchQuery }) {
       }
     }
   };
-  
-  // Función para generar la clase CSS basada en el estado
+    // Función para generar la clase CSS basada en el estado
   const getEstadoClass = (estado) => {
     switch(estado) {
-      case 'Nuevo Lead':
+      case 'Frío':
         return 'estado-nuevo';
-      case 'Cliente Activo':
-        return 'estado-activo';
-      case 'Negociación':
+      case 'Tibio':
         return 'estado-negociacion';
+      case 'Caliente':
+        return 'estado-activo';
       case 'Cliente Perdido':
         return 'estado-perdido';
       default:
@@ -106,11 +103,11 @@ function CustomersLeads({ searchQuery }) {
   // Función para generar la clase CSS basada en el plan
   const getPlanClass = (plan) => {
     switch(plan) {
-      case 'básico':
+      case 'Plan Básico':
         return 'plan-basico';
-      case 'pro':
+      case 'Plan Pro':
         return 'plan-pro';
-      case 'premium':
+      case 'Plan Premium':
         return 'plan-premium';
       default:
         return 'plan-basico';
@@ -152,10 +149,9 @@ function CustomersLeads({ searchQuery }) {
               <th>Plan</th>
               <th>Acciones</th>
             </tr>
-          </thead>
-          <tbody>
+          </thead>          <tbody>
             {clientesFiltrados.map((cliente) => (
-              <tr key={cliente.id}> {/* Use cliente.id as key */}
+              <tr key={cliente.id}>
                 <td>{cliente.nombre}</td>
                 <td>{cliente.email || '-'}</td>
                 <td>{cliente.telefono || '-'}</td>
@@ -163,13 +159,9 @@ function CustomersLeads({ searchQuery }) {
                   <span className={`estado-badge ${getEstadoClass(cliente.estado)}`}>
                     {cliente.estado}
                   </span>
-                </td>
-                <td>
-                  <span className={`plan-badge-small ${getPlanClass(cliente.plan || 'básico')}`}>
-                    {cliente.plan ? 
-                      cliente.plan.charAt(0).toUpperCase() + cliente.plan.slice(1) : 
-                      'Básico'
-                    }
+                </td>                <td>
+                  <span className={`plan-badge-small ${getPlanClass(cliente.plan || 'Plan Básico')}`}>
+                    {cliente.plan || 'Plan Básico'}
                   </span>
                 </td>
                 <td>
@@ -182,7 +174,7 @@ function CustomersLeads({ searchQuery }) {
                     </button>
                     <button 
                       className="action-button delete-button"
-                      onClick={() => handleBorrarCliente(cliente.id)} // Use cliente.id
+                      onClick={() => handleBorrarCliente(cliente.id)}
                     >
                       <span className="button-icon">🗑️</span> Eliminar
                     </button>
@@ -213,23 +205,22 @@ function CustomersLeads({ searchQuery }) {
           placeholder="Teléfono del cliente"
           value={nuevoTelefono}
           onChange={(e) => setNuevoTelefono(e.target.value)}
-        />
-        <select
+        />        <select
           value={nuevoEstado}
           onChange={(e) => setNuevoEstado(e.target.value)}
         >
-          <option value="Nuevo Lead">Nuevo Lead</option>
-          <option value="Cliente Activo">Cliente Activo</option>
-          <option value="Negociación">Negociación</option>
+          <option value="Frío">Frío</option>
+          <option value="Tibio">Tibio</option>
+          <option value="Caliente">Caliente</option>
           <option value="Cliente Perdido">Cliente Perdido</option>
         </select>
         <select
           value={nuevoPlan}
           onChange={(e) => setNuevoPlan(e.target.value)}
         >
-          <option value="básico">Básico</option>
-          <option value="pro">Pro</option>
-          <option value="premium">Premium</option>
+          <option value="Plan Básico">Plan Básico</option>
+          <option value="Plan Pro">Plan Pro</option>
+          <option value="Plan Premium">Plan Premium</option>
         </select>
         <button onClick={handleAgregarOEditarLead}>
           {editandoId !== null ? 'Guardar Cambios' : 'Agregar Cliente'}

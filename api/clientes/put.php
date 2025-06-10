@@ -1,11 +1,21 @@
 <?php
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Headers: Content-Type');
 require_once '../db.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
+if (!$data || !isset($data['id']) || !isset($data['nombre']) || !isset($data['estado']) || !isset($data['plan'])) {
+    echo json_encode(['success' => false, 'error' => 'Datos incompletos']);
+    exit;
+}
+
 $id = $data['id'];
 $nombre = $data['nombre'];
+$email = isset($data['email']) ? $data['email'] : null;
+$telefono = isset($data['telefono']) ? $data['telefono'] : null;
 $estado = $data['estado'];
 $plan = $data['plan'];
 
@@ -18,9 +28,9 @@ $stmt_plan->execute([$plan]);
 $id_plan = $stmt_plan->fetchColumn();
 
 if ($id_estado && $id_plan) {
-    $sql = "UPDATE clientes_leads SET nombre_cliente = ?, id_estado = ?, id_planes = ? WHERE id_cliente = ?";
+    $sql = "UPDATE clientes_leads SET nombre_cliente = ?, email_cliente = ?, telefono_cliente = ?, id_estado = ?, id_planes = ? WHERE id_cliente = ?";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$nombre, $id_estado, $id_plan, $id]);
+    $stmt->execute([$nombre, $email, $telefono, $id_estado, $id_plan, $id]);
 
     echo json_encode(['success' => true]);
 } else {
