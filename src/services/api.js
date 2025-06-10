@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 const API_BASE_URL = 'http://localhost/CRM/api'; // Ruta corregida para XAMPP
 
+=======
+const API_BASE_URL = 'http://localhost/dashboard/CRM%20Wolty/CRM/api'; // Ruta corregida para XAMPP
+>>>>>>> f4dea9b (Añadir Clientes v1)
 =======
 const API_BASE_URL = 'http://localhost/dashboard/CRM%20Wolty/CRM/api'; // Ruta corregida para XAMPP
 >>>>>>> f4dea9b (Añadir Clientes v1)
