@@ -9,11 +9,13 @@ import AgendaActivities from './components/AgendaActivities';
 import SalesPipeline from './components/SalesPipeline';
 import DataManagement from './components/DataManagement'; // Importar el componente DataManagement
 import Login from './components/Login/Login'; // Importar el componente Login
+import AgentesChat from './components/AgentesChat'; // Importar el componente de chat
 import { ClientesProvider } from './context/ClientesContext';
 
-function App() {
-  const [activeSection, setActiveSection] = useState('dashboard');  const [searchQuery, setSearchQuery] = useState('');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768); // Collapsed by default on mobile
+function App() {  const [activeSection, setActiveSection] = useState('dashboard');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);// Collapsed by default on mobile
   // const [selectedPlan, setSelectedPlan] = useState('básico'); // Eliminado
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('darkMode');
@@ -21,10 +23,24 @@ function App() {
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-
   // Función para alternar la barra lateral
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+  // Función para cambiar sección y cerrar sidebar en móvil
+  const handleSectionChange = (section) => {
+    if (section === activeSection) return; // No hacer nada si es la misma sección
+    
+    setIsTransitioning(true);
+    
+    setTimeout(() => {
+      setActiveSection(section);
+      setIsTransitioning(false);
+      
+      if (window.innerWidth < 768) {
+        setSidebarCollapsed(true);
+      }
+    }, 150); // Duración de la transición de salida
   };
   // Función para alternar el modo oscuro
   const toggleDarkMode = () => {
@@ -97,79 +113,21 @@ function App() {
       case 'sales':
         return <SalesPipeline />;
       case 'agenda':
-        return <AgendaActivities />;
-      case 'data':
+        return <AgendaActivities />;      case 'data':
         return <DataManagement />;
       case 'agentes':
-        return <AgentesIA />; // Eliminado prop plan
-      default:
-        return <div className="welcome-section">Selecciona una sección del menú lateral</div>;
+        return <AgentesChat />; // Nuevo componente de chat
+      default:        return <div className="welcome-section">Selecciona una sección del menú lateral</div>;
     }
   };
-
-  // Componente para mostrar los agentes de IA
-  const AgentesIA = () => { // Eliminado prop plan
-    return (
-      <div className="component-card agentes-ia">
-        <h2>Agentes Inteligentes</h2>
-        
-        {/* <div className="plan-badge"> // Eliminado plan badge
-          <span>Plan {plan.charAt(0).toUpperCase() + plan.slice(1)}</span>
-        </div> */}
-        
-        <div className="agentes-container">
-          <div className="agente-card">
-            <div className="agente-icon">
-              <span className="agente-status active"></span>
-              <span className="icon">👨‍💼</span>
-            </div>
-            <div className="agente-info">
-              <h3>1. Agente Vendedor 24/7</h3>
-              <p className="agente-description">Atiende por WhatsApp o llamada, responde preguntas, guía al cliente y lo lleva a tomar acción.</p>
-              <div className="agente-role">
-                <strong>Funciona como:</strong> el primer asesor comercial del negocio.
-              </div>
-              <div className="agente-plan">Incluido en Plan Básico</div>
-            </div>
-          </div>
-          
-          <div className="agente-card">
-            <div className="agente-icon">
-              <span className="agente-status active"></span>
-              <span className="icon">📅</span>
-            </div>
-            <div className="agente-info">
-              <h3>2. Agente de Agenda Seguimiento</h3>
-              <p className="agente-description">Agenda citas, envía recordatorios y confirma asistencias.</p>
-              <div className="agente-role">
-                <strong>Funciona como:</strong> una secretaria automatizada que nunca olvida.
-              </div>
-              <div className="agente-plan">Incluido en Plan Básico</div>
-            </div>
-          </div>
-          
-          <div className="agente-card">
-            <div className="agente-icon">
-              <span className="agente-status active"></span>
-              <span className="icon">🔍</span>
-            </div>
-            <div className="agente-info">
-              <h3>3. Agente Supervisor</h3>
-              <p className="agente-description">Muestra al dueño del negocio cuántos clientes llegaron, se atendieron o se perdieron.</p>
-              <div className="agente-role">
-                <strong>Funciona como:</strong> el "Waze" de las ventas. Mide y guía.
-              </div>
-              <div className="agente-plan">Incluido en Plan Básico</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <ClientesProvider>
       <div className={`crm-app ${isDarkMode ? 'dark-mode' : ''}`}>
+        {/* Overlay para móvil */}
+        {!sidebarCollapsed && window.innerWidth < 768 && (
+          <div className="sidebar-overlay" onClick={toggleSidebar}></div>
+        )}
+        
         <button className={`sidebar-toggle ${!sidebarCollapsed ? 'open' : ''}`} onClick={toggleSidebar}>
           <span className="hamburger-icon"></span>
         </button>
@@ -192,40 +150,39 @@ function App() {
           
           {/* Eliminado el selector de planes */}
           
-          <nav className="sidebar-nav">
-            <button 
+          <nav className="sidebar-nav">            <button 
               className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`}
-              onClick={() => setActiveSection('dashboard')}
+              onClick={() => handleSectionChange('dashboard')}
             >
               <span className="nav-icon">📊</span> Dashboard
             </button>
             <button 
               className={`nav-item ${activeSection === 'customers' ? 'active' : ''}`}
-              onClick={() => setActiveSection('customers')}
+              onClick={() => handleSectionChange('customers')}
             >
               <span className="nav-icon">👥</span> Clientes y Leads
             </button>
             <button 
               className={`nav-item ${activeSection === 'sales' ? 'active' : ''}`}
-              onClick={() => setActiveSection('sales')}
+              onClick={() => handleSectionChange('sales')}
             >
               <span className="nav-icon">📈</span> Pipeline de Ventas
             </button>
             <button 
               className={`nav-item ${activeSection === 'agenda' ? 'active' : ''}`}
-              onClick={() => setActiveSection('agenda')}
+              onClick={() => handleSectionChange('agenda')}
             >
               <span className="nav-icon">📅</span> Agenda y Actividades
             </button>
             <button 
               className={`nav-item ${activeSection === 'data' ? 'active' : ''}`}
-              onClick={() => setActiveSection('data')}
+              onClick={() => handleSectionChange('data')}
             >
               <span className="nav-icon">⚙️</span> Gestión de Datos
             </button>
             <button 
               className={`nav-item ${activeSection === 'agentes' ? 'active' : ''}`}
-              onClick={() => setActiveSection('agentes')}
+              onClick={() => handleSectionChange('agentes')}
             >
               <span className="nav-icon">🤖</span> Agentes IA
             </button>
@@ -257,9 +214,8 @@ function App() {
                 </button>
               </div>
             </div>
-          </header>
-          
-          <div className="content-body">
+          </header>          
+          <div className={`content-body ${isTransitioning ? 'transitioning' : ''}`}>
             {renderMainContent()}
           </div>
           
