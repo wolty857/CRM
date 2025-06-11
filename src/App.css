@@ -12,11 +12,14 @@
   --text-light: #71717a;
   --accent-color: #ec4899; /* Rosa/Fucsia */
   --accent-light: #f472b6;
-  --border-color: #e4e4e7;
-  --success-color: #10b981; /* Verde para éxito/activo */
+  --border-color: #e4e4e7;  --success-color: #10b981; /* Verde para éxito/activo */
   --warning-color: #f59e0b; /* Naranja para advertencia/negociación */
   --danger-color: #ef4444;  /* Rojo para peligro/perdido */
   --info-color: #3b82f6;    /* Azul para información/nuevo lead */
+  --success-color-bg: rgba(16, 185, 129, 0.1);
+  --warning-color-bg: rgba(245, 158, 11, 0.1);
+  --danger-color-bg: rgba(239, 68, 68, 0.1);
+  --info-color-bg: rgba(59, 130, 246, 0.1);
   --primary-hover-light: rgba(124, 58, 237, 0.1);
   --primary-hover-dark: rgba(139, 92, 246, 0.15);
   --success-color-shadow: rgba(16, 185, 129, 0.3);

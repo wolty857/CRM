@@ -133,14 +133,35 @@ export const getEtapasPipeline = async () => {
 
 // --- KPIs ---
 export const getKPIs = async () => {
-  // return fetch(`${API_BASE_URL}/kpis`).then(handleResponse);
-  console.warn('API: getKPIs no implementado. Usando datos de demostración vacíos.');
-  return Promise.resolve({ // Placeholder
-    totalClientes: 0,
-    nuevosLeadsMes: 0,
-    tasaConversion: 0,
-    ingresosGenerados: 0,
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/kpis/get.php`);
+    const data = await handleResponse(response);
+    
+    if (data.success) {
+      return data;
+    } else {
+      throw new Error(data.error || 'Error al obtener KPIs');
+    }
+  } catch (error) {
+    console.error('Error al obtener KPIs:', error);
+    // Devolver datos por defecto en caso de error
+    return {
+      kpis: {
+        total_clientes: 0,
+        clientes_calientes: 0,
+        ingresos_estimados: 0,
+        tasa_conversion: 0
+      },
+      estados: [],
+      planes: [],
+      metricas_detalladas: {
+        frios: 0,
+        tibios: 0,
+        calientes: 0,
+        perdidos: 0
+      }
+    };
+  }
 };
 
 // --- Visual Reports (Chart Data) ---
