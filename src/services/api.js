@@ -132,9 +132,22 @@ export const getEtapasPipeline = async () => {
 };
 
 // --- KPIs ---
-export const getKPIs = async () => {
+export const getKPIs = async (currentUser = null) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/kpis/get.php`);
+    // Construir URL con parámetros según el usuario
+    let url = `${API_BASE_URL}/kpis/get.php`;
+    const params = new URLSearchParams();
+    
+    if (currentUser) {
+      params.append('role', currentUser.role || 'vendedor');
+      params.append('user_id', currentUser.id || '');
+    }
+    
+    if (params.toString()) {
+      url += '?' + params.toString();
+    }
+    
+    const response = await fetch(url);
     const data = await handleResponse(response);
     
     if (data.success) {
@@ -150,7 +163,9 @@ export const getKPIs = async () => {
         total_clientes: 0,
         clientes_calientes: 0,
         ingresos_estimados: 0,
-        tasa_conversion: 0
+        tasa_conversion: 0,
+        usuarios_activos: 0,
+        planes_activos: 0
       },
       estados: [],
       planes: [],

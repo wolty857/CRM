@@ -45,8 +45,7 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
     localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
-  };
-  // Verificar autenticación al cargar la app
+  };  // Verificar autenticación al cargar la app
   useEffect(() => {
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
@@ -97,11 +96,10 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
   }
   // Función para renderizar el contenido principal basado en la sección activa
   const renderMainContent = () => {
-    switch(activeSection) {
-      case 'dashboard':
+    switch(activeSection) {      case 'dashboard':
         return (
           <div className="dashboard-container">
-            <KPIsPanel />
+            <KPIsPanel currentUser={currentUser} />
             <VisualReports />
           </div>
         );
@@ -180,17 +178,19 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
                   activeSection === 'agentes' ? 'Agentes Inteligentes' :
                   'Dashboard'}</h1>
             </div>
-            
-            <div className="header-right">
+              <div className="header-right">
               <div className="user-info">
                 <div className="user-details">
                   <span className="user-name">
                     👤 {currentUser?.nombre_completo || currentUser?.username || 'Usuario'}
                   </span>
+                  <span className="user-role">
+                    {currentUser?.role === 'admin' ? '🔐 Administrador' : '👨‍💼 Vendedor'}
+                  </span>
                   <span className="user-plan">
                     💎 Plan {currentUser?.plan ? currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1) : 'Básico'}
                   </span>
-                </div>                <button className="logout-btn" onClick={handleLogout}>
+                </div><button className="logout-btn" onClick={handleLogout}>
                   Cerrar Sesión
                 </button>
               </div>

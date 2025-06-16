@@ -25,8 +25,8 @@ $username = trim($input['username']);
 $password = $input['password'];
 
 try {
-    // Buscar el usuario en la base de datos
-    $stmt = $pdo->prepare("SELECT id, username, nombre_completo, password_hash, email, plan FROM users WHERE username = :username");
+    // Buscar el usuario en la base de datos (incluyendo role)
+    $stmt = $pdo->prepare("SELECT id, username, nombre_completo, password_hash, email, role, plan FROM users WHERE username = :username");
     $stmt->bindParam(':username', $username);
     $stmt->execute();
     
@@ -40,8 +40,7 @@ try {
         $updateStmt = $pdo->prepare("UPDATE users SET updated_at = NOW() WHERE id = :id");
         $updateStmt->bindParam(':id', $user['id']);
         $updateStmt->execute();
-        
-        // Remover la contraseña de la respuesta
+          // Remover la contraseña de la respuesta
         unset($user['password_hash']);
         
         echo json_encode([
