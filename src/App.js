@@ -157,7 +157,7 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
               <span className="nav-icon">
                 {currentUser?.role === 'admin' ? '👥' : '🎯'}
               </span> 
-              {currentUser?.role === 'admin' ? 'Usuarios del Sistema' : 'Mis Clientes y Leads'}
+              {currentUser?.role === 'admin' ? 'Usuarios del Sistema' : 'Leads'}
             </button>
             <button 
               className={`nav-item ${activeSection === 'agenda' ? 'active' : ''}`}
@@ -177,7 +177,7 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
         {/* Área principal de contenido */}
         <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>          <header className="content-header">            <div className="header-left">
               <h1>{activeSection === 'dashboard' ? 'Panel de Control' : 
-                  activeSection === 'customers' ? (currentUser?.role === 'admin' ? 'Usuarios del Sistema' : 'Mis Clientes y Leads') :
+                  activeSection === 'customers' ? (currentUser?.role === 'admin' ? 'Usuarios del Sistema' : 'Leads') :
                   activeSection === 'agenda' ? 'Agenda Google Calendar' :
                   activeSection === 'agentes' ? 'Agentes Inteligentes' :
                   'Dashboard'}</h1>

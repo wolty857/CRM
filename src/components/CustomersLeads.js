@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './CustomersLeads.css';
 import { useClientes } from '../context/ClientesContext';
 
-function CustomersLeads({ searchQuery }) {
+function CustomersLeads({ searchQuery, currentUser }) {
   const { 
     clientes, 
     agregarCliente, 
@@ -12,37 +12,50 @@ function CustomersLeads({ searchQuery }) {
     error 
   } = useClientes();
   const [nuevoNombre, setNuevoNombre] = useState('');
-  const [nuevoEmail, setNuevoEmail] = useState(''); // Added email
-  const [nuevoTelefono, setNuevoTelefono] = useState(''); // Added phone
-  const [nuevoEstado, setNuevoEstado] = useState('Frío');
-  const [nuevoPlan, setNuevoPlan] = useState('Plan Básico');
+  const [nuevoEmail, setNuevoEmail] = useState('');
+  const [nuevoTelefono, setNuevoTelefono] = useState('');
+  const [nuevoEstado, setNuevoEstado] = useState('Nuevo');
+  const [nuevoOrigen, setNuevoOrigen] = useState('Página Web');
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
-  const [editandoId, setEditandoId] = useState(null); // Changed from index to ID
-
-  // Filtrar clientes cuando cambia el searchQuery o clientes
+  const [editandoId, setEditandoId] = useState(null);
+  const [filtroEstado, setFiltroEstado] = useState('Todos');
+  const [filtroOrigen, setFiltroOrigen] = useState('Todos');
+  // Filtrar clientes cuando cambia el searchQuery, clientes o filtros
   useEffect(() => {
+    let filtrados = clientes;
+
+    // Filtro por búsqueda
     if (searchQuery) {
-      const filtrados = clientes.filter(cliente => 
+      filtrados = filtrados.filter(cliente => 
         cliente.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (cliente.email && cliente.email.toLowerCase().includes(searchQuery.toLowerCase()))
       );
-      setClientesFiltrados(filtrados);
-    } else {
-      setClientesFiltrados(clientes); // This will be an empty array initially
     }
-  }, [searchQuery, clientes]);
 
+    // Filtro por estado
+    if (filtroEstado !== 'Todos') {
+      filtrados = filtrados.filter(cliente => cliente.estado === filtroEstado);
+    }
+
+    // Filtro por origen
+    if (filtroOrigen !== 'Todos') {
+      filtrados = filtrados.filter(cliente => cliente.origen === filtroOrigen);
+    }
+
+    setClientesFiltrados(filtrados);
+  }, [searchQuery, clientes, filtroEstado, filtroOrigen]);
   const resetForm = () => {
     setNuevoNombre('');
     setNuevoEmail('');
-    setNuevoTelefono('');    setNuevoEstado('Frío');
-    setNuevoPlan('Plan Básico');
+    setNuevoTelefono('');
+    setNuevoEstado('Nuevo');
+    setNuevoOrigen('Página Web');
     setEditandoId(null);
   };
 
   const handleAgregarOEditarLead = async () => {
     if (!nuevoNombre) {
-      alert('El nombre es obligatorio.'); // Basic validation
+      alert('El nombre es obligatorio.');
       return;
     }
     const clienteData = { 
@@ -50,7 +63,7 @@ function CustomersLeads({ searchQuery }) {
       email: nuevoEmail,
       telefono: nuevoTelefono,
       estado: nuevoEstado,
-      plan: nuevoPlan
+      origen: nuevoOrigen
     };
 
     try {
@@ -65,13 +78,12 @@ function CustomersLeads({ searchQuery }) {
       alert(`Error al guardar cliente: ${apiError.message}`);
     }
   };
-
   const prepararEdicion = (cliente) => {
     setNuevoNombre(cliente.nombre);
     setNuevoEmail(cliente.email || '');
     setNuevoTelefono(cliente.telefono || '');
     setNuevoEstado(cliente.estado);
-    setNuevoPlan(cliente.plan || 'Plan Básico');
+    setNuevoOrigen(cliente.origen || 'Página Web');
     setEditandoId(cliente.id);
   };
 
@@ -83,34 +95,41 @@ function CustomersLeads({ searchQuery }) {
         alert(`Error al eliminar cliente: ${apiError.message}`);
       }
     }
-  };
-    // Función para generar la clase CSS basada en el estado
+  };  // Función para generar la clase CSS basada en el estado
   const getEstadoClass = (estado) => {
     switch(estado) {
-      case 'Frío':
+      case 'Nuevo':
         return 'estado-nuevo';
-      case 'Tibio':
+      case 'Contactado':
+        return 'estado-contactado';
+      case 'Calificado':
+        return 'estado-calificado';
+      case 'Negociación':
         return 'estado-negociacion';
-      case 'Caliente':
-        return 'estado-activo';
-      case 'Cliente Perdido':
+      case 'Cliente':
+        return 'estado-cliente';
+      case 'Perdido':
         return 'estado-perdido';
       default:
-        return '';
+        return 'estado-nuevo';
     }
   };
   
-  // Función para generar la clase CSS basada en el plan
-  const getPlanClass = (plan) => {
-    switch(plan) {
-      case 'Plan Básico':
-        return 'plan-basico';
-      case 'Plan Pro':
-        return 'plan-pro';
-      case 'Plan Premium':
-        return 'plan-premium';
+  // Función para generar la clase CSS basada en el origen
+  const getOrigenClass = (origen) => {
+    switch(origen) {
+      case 'Página Web':
+        return 'origen-web';
+      case 'Redes Sociales':
+        return 'origen-social';
+      case 'Referido':
+        return 'origen-referido';
+      case 'Evento':
+        return 'origen-evento';
+      case 'Llamada Fría':
+        return 'origen-fria';
       default:
-        return 'plan-basico';
+        return 'origen-web';
     }
   };
 
@@ -121,35 +140,62 @@ function CustomersLeads({ searchQuery }) {
   if (error) {
     return <div className="component-card customers-leads"><p className="error-message">Error al cargar datos: {error}</p></div>;
   }
-
   return (
     <div className="component-card customers-leads">
-      <h2>Clientes y Leads</h2>
+      <h2>Leads</h2>
 
-      {clientesFiltrados.length === 0 && !searchQuery && (
+      {/* Filtros */}
+      <div className="filters-section">
+        <div className="filter-group">
+          <label>Estado:</label>
+          <select value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}>
+            <option value="Todos">Todos los estados</option>
+            <option value="Nuevo">Nuevo</option>
+            <option value="Contactado">Contactado</option>
+            <option value="Calificado">Calificado</option>
+            <option value="Negociación">Negociación</option>
+            <option value="Cliente">Cliente</option>
+            <option value="Perdido">Perdido</option>
+          </select>
+        </div>
+        <div className="filter-group">
+          <label>Origen:</label>
+          <select value={filtroOrigen} onChange={(e) => setFiltroOrigen(e.target.value)}>
+            <option value="Todos">Todos los orígenes</option>
+            <option value="Página Web">Página Web</option>
+            <option value="Redes Sociales">Redes Sociales</option>
+            <option value="Referido">Referido</option>
+            <option value="Evento">Evento</option>
+            <option value="Llamada Fría">Llamada Fría</option>
+          </select>
+        </div>
+        <div className="filter-stats">
+          <span className="stats-item">Total: {clientesFiltrados.length}</span>
+        </div>
+      </div>      {clientesFiltrados.length === 0 && !searchQuery && filtroEstado === 'Todos' && filtroOrigen === 'Todos' && (
         <div className="no-data-message">
-          <p>Aún no hay clientes o leads registrados.</p>
+          <p>Aún no hay leads registrados.</p>
           <p>Utiliza el formulario de abajo para agregar el primero.</p>
         </div>
       )}
-      {clientesFiltrados.length === 0 && searchQuery && (
+      {clientesFiltrados.length === 0 && (searchQuery || filtroEstado !== 'Todos' || filtroOrigen !== 'Todos') && (
          <div className="no-data-message">
-          <p>No se encontraron clientes con el término "{searchQuery}".</p>
+          <p>No se encontraron leads con los filtros aplicados.</p>
         </div>
       )}
 
-      {clientesFiltrados.length > 0 && (
-        <table className="leads-table">
+      {clientesFiltrados.length > 0 && (        <table className="leads-table">
           <thead>
             <tr>
               <th>Nombre</th>
               <th>Email</th>
               <th>Teléfono</th>
               <th>Estado</th>
-              <th>Plan</th>
+              <th>Origen</th>
               <th>Acciones</th>
             </tr>
-          </thead>          <tbody>
+          </thead>
+          <tbody>
             {clientesFiltrados.map((cliente) => (
               <tr key={cliente.id}>
                 <td>{cliente.nombre}</td>
@@ -159,9 +205,10 @@ function CustomersLeads({ searchQuery }) {
                   <span className={`estado-badge ${getEstadoClass(cliente.estado)}`}>
                     {cliente.estado}
                   </span>
-                </td>                <td>
-                  <span className={`plan-badge-small ${getPlanClass(cliente.plan || 'Plan Básico')}`}>
-                    {cliente.plan || 'Plan Básico'}
+                </td>
+                <td>
+                  <span className={`origen-badge ${getOrigenClass(cliente.origen || 'Página Web')}`}>
+                    {cliente.origen || 'Página Web'}
                   </span>
                 </td>
                 <td>
@@ -184,46 +231,49 @@ function CustomersLeads({ searchQuery }) {
             ))}
           </tbody>
         </table>
-      )}
-
-      <div className="add-lead-form">
-        <h3>{editandoId !== null ? 'Editar Cliente/Lead' : 'Agregar Nuevo Cliente/Lead'}</h3>
+      )}      <div className="add-lead-form">
+        <h3>{editandoId !== null ? 'Editar Lead' : 'Agregar Nuevo Lead'}</h3>
         <input
           type="text"
-          placeholder="Nombre del cliente"
+          placeholder="Nombre del lead"
           value={nuevoNombre}
           onChange={(e) => setNuevoNombre(e.target.value)}
         />
         <input
           type="email"
-          placeholder="Email del cliente"
+          placeholder="Email del lead"
           value={nuevoEmail}
           onChange={(e) => setNuevoEmail(e.target.value)}
         />
         <input
           type="tel"
-          placeholder="Teléfono del cliente"
+          placeholder="Teléfono del lead"
           value={nuevoTelefono}
           onChange={(e) => setNuevoTelefono(e.target.value)}
-        />        <select
+        />
+        <select
           value={nuevoEstado}
           onChange={(e) => setNuevoEstado(e.target.value)}
         >
-          <option value="Frío">Frío</option>
-          <option value="Tibio">Tibio</option>
-          <option value="Caliente">Caliente</option>
-          <option value="Cliente Perdido">Cliente Perdido</option>
+          <option value="Nuevo">Nuevo</option>
+          <option value="Contactado">Contactado</option>
+          <option value="Calificado">Calificado</option>
+          <option value="Negociación">Negociación</option>
+          <option value="Cliente">Cliente</option>
+          <option value="Perdido">Perdido</option>
         </select>
         <select
-          value={nuevoPlan}
-          onChange={(e) => setNuevoPlan(e.target.value)}
+          value={nuevoOrigen}
+          onChange={(e) => setNuevoOrigen(e.target.value)}
         >
-          <option value="Plan Básico">Plan Básico</option>
-          <option value="Plan Pro">Plan Pro</option>
-          <option value="Plan Premium">Plan Premium</option>
+          <option value="Página Web">Página Web</option>
+          <option value="Redes Sociales">Redes Sociales</option>
+          <option value="Referido">Referido</option>
+          <option value="Evento">Evento</option>
+          <option value="Llamada Fría">Llamada Fría</option>
         </select>
         <button onClick={handleAgregarOEditarLead}>
-          {editandoId !== null ? 'Guardar Cambios' : 'Agregar Cliente'}
+          {editandoId !== null ? 'Guardar Cambios' : 'Agregar Lead'}
         </button>
         {editandoId !== null && (
           <button onClick={resetForm} className="secondary-action">
