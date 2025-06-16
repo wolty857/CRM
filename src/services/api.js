@@ -121,30 +121,6 @@ export const deleteCliente = async (clienteId) => {
   }
 };
 
-// --- Actividades (Agenda) ---
-export const getActividades = async () => {
-  // return fetch(`${API_BASE_URL}/actividades`).then(handleResponse);
-  console.warn('API: getActividades no implementado. Usando datos de demostración vacíos.');
-  return Promise.resolve([]); // Placeholder
-};
-
-export const addActividad = async (actividadData) => {
-  // return fetch(`${API_BASE_URL}/actividades`, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(actividadData),
-  // }).then(handleResponse);
-  console.warn('API: addActividad no implementado.');
-  return Promise.resolve({ id: Date.now(), ...actividadData }); // Placeholder
-};
-
-// --- Pipeline de Ventas (Etapas) ---
-export const getEtapasPipeline = async () => {
-  // return fetch(`${API_BASE_URL}/pipeline`).then(handleResponse);
-  console.warn('API: getEtapasPipeline no implementado. Usando datos de demostración vacíos.');
-  return Promise.resolve([]); // Placeholder
-};
-
 // --- KPIs ---
 export const getKPIs = async (currentUser = null) => {
   try {
@@ -193,18 +169,6 @@ export const getKPIs = async (currentUser = null) => {
   }
 };
 
-// --- Visual Reports (Chart Data) ---
-export const getReporteCrecimientoClientes = async () => {
-  // return fetch(`${API_BASE_URL}/reportes/crecimiento-clientes`).then(handleResponse);
-  console.warn('API: getReporteCrecimientoClientes no implementado. Usando datos de demostración vacíos.');
-  return Promise.resolve([]); // Placeholder
-};
-
-export const getReporteConversionLeads = async () => {
-  // return fetch(`${API_BASE_URL}/reportes/conversion-leads`).then(handleResponse);
-  console.warn('API: getReporteConversionLeads no implementado. Usando datos de demostración vacíos.');
-  return Promise.resolve([]); // Placeholder
-};
 
 // Función de prueba para verificar la conexión
 export const testConnection = async () => {
@@ -218,20 +182,3 @@ export const testConnection = async () => {
     throw error;
   }
 };
-
-// Add more API functions as needed for other data types (e.g., DataManagement)
-
-// Example of a more generic fetch function if needed
-// const apiRequest = async (endpoint, method = 'GET', body = null) => {
-//   const options = {
-//     method,
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//   };
-//   if (body) {
-//     options.body = JSON.stringify(body);
-//   }
-//   const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-//   return handleResponse(response);
-// };
