@@ -6,8 +6,6 @@ import KPIsPanel from './components/KPIsPanel';
 import VisualReports from './components/VisualReports';
 import CustomersLeads from './components/CustomersLeads';
 import AgendaActivities from './components/AgendaActivities';
-import SalesPipeline from './components/SalesPipeline';
-import DataManagement from './components/DataManagement'; // Importar el componente DataManagement
 import Login from './components/Login/Login'; // Importar el componente Login
 import AgentesChat from './components/AgentesChat'; // Importar el componente de chat
 import { ClientesProvider } from './context/ClientesContext';
@@ -97,7 +95,6 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
   if (!isAuthenticated) {
     return <Login onLogin={handleLogin} />;
   }
-
   // Función para renderizar el contenido principal basado en la sección activa
   const renderMainContent = () => {
     switch(activeSection) {
@@ -110,14 +107,12 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
         );
       case 'customers':
         return <CustomersLeads searchQuery={searchQuery} />;
-      case 'sales':
-        return <SalesPipeline />;
       case 'agenda':
-        return <AgendaActivities />;      case 'data':
-        return <DataManagement />;
+        return <AgendaActivities />;
       case 'agentes':
-        return <AgentesChat />; // Nuevo componente de chat
-      default:        return <div className="welcome-section">Selecciona una sección del menú lateral</div>;
+        return <AgentesChat />; // Componente de chat
+      default:
+        return <div className="welcome-section">Selecciona una sección del menú lateral</div>;
     }
   };
   return (
@@ -149,8 +144,8 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
           </div>
           
           {/* Eliminado el selector de planes */}
-          
-          <nav className="sidebar-nav">            <button 
+            <nav className="sidebar-nav">
+            <button 
               className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`}
               onClick={() => handleSectionChange('dashboard')}
             >
@@ -163,22 +158,10 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
               <span className="nav-icon">👥</span> Clientes y Leads
             </button>
             <button 
-              className={`nav-item ${activeSection === 'sales' ? 'active' : ''}`}
-              onClick={() => handleSectionChange('sales')}
-            >
-              <span className="nav-icon">📈</span> Pipeline de Ventas
-            </button>
-            <button 
               className={`nav-item ${activeSection === 'agenda' ? 'active' : ''}`}
               onClick={() => handleSectionChange('agenda')}
             >
-              <span className="nav-icon">📅</span> Agenda y Actividades
-            </button>
-            <button 
-              className={`nav-item ${activeSection === 'data' ? 'active' : ''}`}
-              onClick={() => handleSectionChange('data')}
-            >
-              <span className="nav-icon">⚙️</span> Gestión de Datos
+              <span className="nav-icon">📅</span> Agenda Google
             </button>
             <button 
               className={`nav-item ${activeSection === 'agentes' ? 'active' : ''}`}
@@ -190,14 +173,12 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
         </aside>
         
         {/* Área principal de contenido */}
-        <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>          <header className="content-header">
-            <div className="header-left">
+        <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>          <header className="content-header">            <div className="header-left">
               <h1>{activeSection === 'dashboard' ? 'Panel de Control' : 
                   activeSection === 'customers' ? 'Clientes y Leads' :
-                  activeSection === 'sales' ? 'Pipeline de Ventas' :
-                  activeSection === 'agenda' ? 'Agenda y Actividades' :
+                  activeSection === 'agenda' ? 'Agenda Google Calendar' :
                   activeSection === 'agentes' ? 'Agentes Inteligentes' :
-                  'Gestión de Datos'}</h1>
+                  'Dashboard'}</h1>
             </div>
             
             <div className="header-right">

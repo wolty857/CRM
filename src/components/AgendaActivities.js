@@ -1,56 +1,45 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './AgendaActivities.css';
 
 function AgendaActivities() {
-  const [actividades, setActividades] = useState([]); // Initialize with an empty array
-
-  const [titulo, setTitulo] = useState('');
-  const [fecha, setFecha] = useState('');
-  const [hora, setHora] = useState('');
-
-  const agregarActividad = () => {
-    if (titulo && fecha && hora) {
-      const nueva = { titulo, fecha, hora };
-      setActividades([...actividades, nueva]);
-      setTitulo('');
-      setFecha('');
-      setHora('');
-    }
-  };
-
   return (
-    <div className="component-card agenda-activities">
-      <h2>Agenda</h2>
-      {actividades.length === 0 ? (
-        <p>No hay actividades programadas.</p>
-      ) : (
-        <ul className="agenda-list">
-          {actividades.map((act, i) => (
-            <li key={i}>
-              📌 <strong>{act.titulo}</strong> <br />
-              🗓 {act.fecha} 🕒 {act.hora}
-            </li>
-          ))}
-        </ul>
-      )}
-      <div className="agenda-form">
-        <input
-          type="text"
-          placeholder="Título de la actividad"
-          value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
-        />
-        <input
-          type="date"
-          value={fecha}
-          onChange={(e) => setFecha(e.target.value)}
-        />
-        <input
-          type="time"
-          value={hora}
-          onChange={(e) => setHora(e.target.value)}
-        />
-        <button onClick={agregarActividad}>Agregar</button>
+    <div className="agenda-container">
+      <div className="coming-soon-card">
+        <div className="coming-soon-icon">
+          📅
+        </div>
+        <h2>Integración con Google Calendar</h2>
+        <p>Estamos trabajando en conectar tu agenda personal con Google Calendar para que puedas:</p>
+        
+        <div className="features-list">
+          <div className="feature-item">
+            <span className="feature-icon">🔄</span>
+            <span>Sincronización automática de eventos</span>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">⏰</span>
+            <span>Recordatorios de seguimiento a clientes</span>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">📞</span>
+            <span>Programación de llamadas y reuniones</span>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">🎯</span>
+            <span>Gestión de tareas y objetivos diarios</span>
+          </div>
+        </div>
+        
+        <div className="progress-indicator">
+          <div className="progress-bar">
+            <div className="progress-fill" style={{width: '75%'}}></div>
+          </div>
+          <span className="progress-text">75% completado</span>
+        </div>
+        
+        <p className="eta-text">
+          <strong>Disponible próximamente</strong> - Integración en desarrollo
+        </p>
       </div>
     </div>
   );
