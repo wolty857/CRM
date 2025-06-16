@@ -8,6 +8,7 @@ import CustomersLeads from './components/CustomersLeads';
 import AgendaActivities from './components/AgendaActivities';
 import Login from './components/Login/Login'; // Importar el componente Login
 import AgentesChat from './components/AgentesChat'; // Importar el componente de chat
+import UsersManagement from './components/UsersManagement'; // Importar gestión de usuarios
 import { ClientesProvider } from './context/ClientesContext';
 
 function App() {  const [activeSection, setActiveSection] = useState('dashboard');
@@ -102,9 +103,10 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
             <KPIsPanel currentUser={currentUser} />
             <VisualReports />
           </div>
-        );
-      case 'customers':
-        return <CustomersLeads searchQuery={searchQuery} />;
+        );      case 'customers':
+        return currentUser?.role === 'admin' ? 
+          <UsersManagement searchQuery={searchQuery} isDarkMode={isDarkMode} /> : 
+          <CustomersLeads searchQuery={searchQuery} currentUser={currentUser} />;
       case 'agenda':
         return <AgendaActivities />;
       case 'agentes':
@@ -148,12 +150,14 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
               onClick={() => handleSectionChange('dashboard')}
             >
               <span className="nav-icon">📊</span> Dashboard
-            </button>
-            <button 
+            </button>            <button 
               className={`nav-item ${activeSection === 'customers' ? 'active' : ''}`}
               onClick={() => handleSectionChange('customers')}
             >
-              <span className="nav-icon">👥</span> Clientes y Leads
+              <span className="nav-icon">
+                {currentUser?.role === 'admin' ? '👥' : '🎯'}
+              </span> 
+              {currentUser?.role === 'admin' ? 'Usuarios del Sistema' : 'Mis Clientes y Leads'}
             </button>
             <button 
               className={`nav-item ${activeSection === 'agenda' ? 'active' : ''}`}
@@ -173,7 +177,7 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
         {/* Área principal de contenido */}
         <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>          <header className="content-header">            <div className="header-left">
               <h1>{activeSection === 'dashboard' ? 'Panel de Control' : 
-                  activeSection === 'customers' ? 'Clientes y Leads' :
+                  activeSection === 'customers' ? (currentUser?.role === 'admin' ? 'Usuarios del Sistema' : 'Mis Clientes y Leads') :
                   activeSection === 'agenda' ? 'Agenda Google Calendar' :
                   activeSection === 'agentes' ? 'Agentes Inteligentes' :
                   'Dashboard'}</h1>

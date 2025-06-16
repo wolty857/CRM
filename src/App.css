@@ -4,15 +4,25 @@
   /* Nueva paleta de colores moderna */
   --primary-color: #7c3aed; /* Morado */
   --primary-hover: #6d28d9;
+  --primary-light: #8b5cf6;
   --secondary-color: #18181b; /* Negro/gris muy oscuro */
   --secondary-light: #27272a;
   --background-color: #f8f7fc; /* Fondo claro con tinte morado */
+  --bg-dark: #f8f7fc;
   --card-background: #ffffff;
+  --card-dark: #ffffff;
   --text-color: #18181b;
   --text-light: #71717a;
+  --text-dark: #18181b;
+  --text-muted: #71717a;
+  --text-muted-dark: #71717a;
   --accent-color: #ec4899; /* Rosa/Fucsia */
   --accent-light: #f472b6;
-  --border-color: #e4e4e7;  --success-color: #10b981; /* Verde para éxito/activo */
+  --border-color: #e4e4e7;
+  --border-dark: #e4e4e7;
+  --input-dark: #ffffff;
+  
+  --success-color: #10b981; /* Verde para éxito/activo */
   --warning-color: #f59e0b; /* Naranja para advertencia/negociación */
   --danger-color: #ef4444;  /* Rojo para peligro/perdido */
   --info-color: #3b82f6;    /* Azul para información/nuevo lead */
@@ -28,7 +38,8 @@
   /* Otros valores */
   --border-radius: 12px;
   --box-shadow: 0 4px 16px rgba(124, 58, 237, 0.1);
-  --transition: all 0.2s ease-in-out;  --sidebar-width: 280px; /* Aumentado para mejor proporción */
+  --transition: all 0.2s ease-in-out;  
+  --sidebar-width: 280px; /* Aumentado para mejor proporción */
   --sidebar-collapsed-width: 0px;
   --sidebar-transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transición más suave */
 }
@@ -37,15 +48,21 @@
 body.dark-mode {
   --primary-color: #8b5cf6;
   --primary-hover: #7c3aed;
-  /* --secondary-color: #f8f7fc; */ /* Comentado o eliminado si no se usa para texto */
-  /* --secondary-light: #e4e4e7; */ /* Comentado o eliminado si no se usa para texto */
+  --primary-light: #a78bfa;
   --background-color: #18181b;
+  --bg-dark: #18181b;
   --card-background: #27272a;
+  --card-dark: #27272a;
   --text-color: #f8f7fc;
-  --text-light: #a1a1aa;
+  --text-light: #f8f7fc;
+  --text-dark: #18181b;
+  --text-muted: #71717a;
+  --text-muted-dark: #a1a1aa;
   --accent-color: #f472b6; /* Rosa/Fucsia más claro */
   --accent-light: #ec4899;
   --border-color: #3f3f46;
+  --border-dark: #3f3f46;
+  --input-dark: #27272a;
 }
 
 * {

@@ -10,9 +10,22 @@ const handleResponse = async (response) => {
 };
 
 // --- Clientes (Customers/Leads) ---
-export const getClientes = async () => {
+export const getClientes = async (currentUser = null) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/clientes/get.php`);
+    // Construir URL con parámetros según el usuario
+    let url = `${API_BASE_URL}/clientes/get.php`;
+    const params = new URLSearchParams();
+    
+    if (currentUser) {
+      params.append('role', currentUser.role || 'vendedor');
+      params.append('user_id', currentUser.id || '');
+    }
+    
+    if (params.toString()) {
+      url += '?' + params.toString();
+    }
+    
+    const response = await fetch(url);
     const data = await handleResponse(response);
     
     // Transformar los datos para que coincidan con el frontend
@@ -22,7 +35,8 @@ export const getClientes = async () => {
       email: cliente.email || '',
       telefono: cliente.telefono || '',
       estado: cliente.tipo_estado,
-      plan: cliente.Tipo_plan
+      plan: cliente.Tipo_plan,
+      vendedor: cliente.vendedor_nombre || cliente.vendedor_username || 'Sin asignar'
     }));
   } catch (error) {
     console.error('Error al obtener clientes:', error);

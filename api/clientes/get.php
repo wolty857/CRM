@@ -5,7 +5,13 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 
 try {
-    require_once '../db.php';    $sql = "SELECT c.id_cliente, c.nombre_cliente, c.email_cliente as email, c.telefono_cliente as telefono, 
+    require_once '../db.php';
+
+    // Obtener parámetros de usuario para filtrado
+    $user_role = isset($_GET['role']) ? $_GET['role'] : 'vendedor';
+    $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
+
+    $sql = "SELECT c.id_cliente, c.nombre_cliente, c.email_cliente as email, c.telefono_cliente as telefono, 
                    e.tipo_estado, p.Tipo_plan, c.vendedor_asignado,
                    u.username as vendedor_username, u.nombre_completo as vendedor_nombre
             FROM clientes_leads c
@@ -13,7 +19,16 @@ try {
             JOIN planes p ON c.id_planes = p.id_planes
             LEFT JOIN users u ON c.vendedor_asignado = u.id";
 
-    $stmt = $pdo->prepare($sql);
+    // Si es vendedor, filtrar solo sus clientes asignados
+    if ($user_role === 'vendedor' && $user_id) {
+        $sql .= " WHERE c.vendedor_asignado = :user_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $user_id);
+    } else {
+        // Admin ve todos los clientes
+        $stmt = $pdo->prepare($sql);
+    }
+
     $stmt->execute();
 
     $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
