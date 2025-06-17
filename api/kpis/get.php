@@ -2,14 +2,27 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 try {
     require_once '../db.php';
+    require_once '../middleware/auth.php';
 
-    // Determinar si es admin o vendedor (puedes obtener esto del token/sesión)
-    $user_role = isset($_GET['role']) ? $_GET['role'] : 'vendedor';
-    $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
+    // Verificar autenticación mejorada
+    $auth = checkAuth();
+    
+    if (!$auth['authenticated']) {
+        http_response_code(401);
+        echo json_encode([
+            'success' => false,
+            'error' => $auth['error'] ?? 'No autorizado',
+            'error_code' => 'UNAUTHORIZED'
+        ]);
+        exit;
+    }
+    
+    $user_role = $auth['role'];
+    $user_id = $auth['user_id'];
 
     if ($user_role === 'admin') {
         // KPIs para ADMIN - Vista general del sistema

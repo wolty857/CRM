@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './App.css'; // Crearemos este archivo CSS más adelante
 
 // Importar los componentes
-import KPIsPanel from './components/KPIsPanel';
 import VisualReports from './components/VisualReports';
 import CustomersLeads from './components/CustomersLeads';
 import AgendaActivities from './components/AgendaActivities';
 import Login from './components/Login/Login'; // Importar el componente Login
 import AgentesChat from './components/AgentesChat'; // Importar el componente de chat
 import UsersManagement from './components/UsersManagement'; // Importar gestión de usuarios
+import AdminDashboard from './components/Admin/AdminDashboard'; // Panel de Admin
+import SalesDashboard from './components/Sales/SalesDashboard'; // Panel de Vendedor
 import { ClientesProvider } from './context/ClientesContext';
 
 function App() {  const [activeSection, setActiveSection] = useState('dashboard');
@@ -94,25 +95,23 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
   // Si no está autenticado, mostrar el componente Login
   if (!isAuthenticated) {
     return <Login onLogin={handleLogin} />;
-  }
-  // Función para renderizar el contenido principal basado en la sección activa
+  }  // Función para renderizar el contenido principal basado en la sección activa
   const renderMainContent = () => {
-    switch(activeSection) {      case 'dashboard':
-        return (
-          <div className="dashboard-container">
-            <KPIsPanel currentUser={currentUser} />
-            <VisualReports />
-          </div>
-        );      case 'customers':
-        return currentUser?.role === 'admin' ? 
-          <UsersManagement searchQuery={searchQuery} isDarkMode={isDarkMode} /> : 
-          <CustomersLeads searchQuery={searchQuery} currentUser={currentUser} />;
-      case 'agenda':
-        return <AgendaActivities />;
-      case 'agentes':
-        return <AgentesChat />; // Componente de chat
-      default:
-        return <div className="welcome-section">Selecciona una sección del menú lateral</div>;
+    // Renderizado separado según el rol del usuario
+    if (currentUser?.role === 'admin') {
+      return <AdminDashboard 
+        activeSection={activeSection}
+        searchQuery={searchQuery}
+        isDarkMode={isDarkMode}
+        currentUser={currentUser}
+      />;
+    } else {
+      return <SalesDashboard
+        activeSection={activeSection}
+        searchQuery={searchQuery}
+        isDarkMode={isDarkMode}
+        currentUser={currentUser}
+      />;
     }
   };
   return (
@@ -142,29 +141,62 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
               className="search-input"
             />
           </div>
-          
-          {/* Eliminado el selector de planes */}
-            <nav className="sidebar-nav">
+            {/* Eliminado el selector de planes */}
+          <nav className="sidebar-nav">
             <button 
               className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`}
               onClick={() => handleSectionChange('dashboard')}
             >
               <span className="nav-icon">📊</span> Dashboard
-            </button>            <button 
-              className={`nav-item ${activeSection === 'customers' ? 'active' : ''}`}
-              onClick={() => handleSectionChange('customers')}
-            >
-              <span className="nav-icon">
-                {currentUser?.role === 'admin' ? '👥' : '🎯'}
-              </span> 
-              {currentUser?.role === 'admin' ? 'Usuarios del Sistema' : 'Leads'}
             </button>
-            <button 
-              className={`nav-item ${activeSection === 'agenda' ? 'active' : ''}`}
-              onClick={() => handleSectionChange('agenda')}
-            >
-              <span className="nav-icon">📅</span> Agenda Google
-            </button>
+            
+            {/* Navegación específica para Admin */}
+            {currentUser?.role === 'admin' ? (
+              <>
+                <button 
+                  className={`nav-item ${activeSection === 'users-management' ? 'active' : ''}`}
+                  onClick={() => handleSectionChange('users-management')}
+                >
+                  <span className="nav-icon">👥</span> Gestión de Usuarios
+                </button>
+                <button 
+                  className={`nav-item ${activeSection === 'system-reports' ? 'active' : ''}`}
+                  onClick={() => handleSectionChange('system-reports')}
+                >
+                  <span className="nav-icon">📈</span> Reportes del Sistema
+                </button>
+                <button 
+                  className={`nav-item ${activeSection === 'system-settings' ? 'active' : ''}`}
+                  onClick={() => handleSectionChange('system-settings')}
+                >
+                  <span className="nav-icon">⚙️</span> Configuración
+                </button>
+              </>
+            ) : (
+              /* Navegación específica para Vendedor */
+              <>
+                <button 
+                  className={`nav-item ${activeSection === 'my-leads' ? 'active' : ''}`}
+                  onClick={() => handleSectionChange('my-leads')}
+                >
+                  <span className="nav-icon">🎯</span> Mis Leads
+                </button>
+                <button 
+                  className={`nav-item ${activeSection === 'my-agenda' ? 'active' : ''}`}
+                  onClick={() => handleSectionChange('my-agenda')}
+                >
+                  <span className="nav-icon">📅</span> Mi Agenda
+                </button>
+                <button 
+                  className={`nav-item ${activeSection === 'my-reports' ? 'active' : ''}`}
+                  onClick={() => handleSectionChange('my-reports')}
+                >
+                  <span className="nav-icon">📊</span> Mis Reportes
+                </button>
+              </>
+            )}
+            
+            {/* Opción común para ambos roles */}
             <button 
               className={`nav-item ${activeSection === 'agentes' ? 'active' : ''}`}
               onClick={() => handleSectionChange('agentes')}
@@ -176,11 +208,21 @@ function App() {  const [activeSection, setActiveSection] = useState('dashboard'
         
         {/* Área principal de contenido */}
         <main className={`main-content ${sidebarCollapsed ? 'expanded' : ''}`}>          <header className="content-header">            <div className="header-left">
-              <h1>{activeSection === 'dashboard' ? 'Panel de Control' : 
-                  activeSection === 'customers' ? (currentUser?.role === 'admin' ? 'Usuarios del Sistema' : 'Leads') :
-                  activeSection === 'agenda' ? 'Agenda Google Calendar' :
-                  activeSection === 'agentes' ? 'Agentes Inteligentes' :
-                  'Dashboard'}</h1>
+              <h1>
+                {currentUser?.role === 'admin' ? 
+                  (activeSection === 'dashboard' ? 'Panel de Administración' : 
+                   activeSection === 'users-management' ? 'Gestión de Usuarios' :
+                   activeSection === 'system-reports' ? 'Reportes del Sistema' :
+                   activeSection === 'system-settings' ? 'Configuración del Sistema' :
+                   'Panel de Administración') :
+                  (activeSection === 'dashboard' ? 'Panel de Ventas' :
+                   activeSection === 'my-leads' ? 'Mis Leads' :
+                   activeSection === 'my-agenda' ? 'Mi Agenda' :
+                   activeSection === 'my-reports' ? 'Mis Reportes' :
+                   'Panel de Ventas')
+                }
+                {activeSection === 'agentes' && ' - Agentes IA'}
+              </h1>
             </div>
               <div className="header-right">
               <div className="user-info">

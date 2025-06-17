@@ -1,0 +1,17 @@
+.sales-dashboard {
+  height: 100%;
+  background: var(--background-color);
+}
+
+.sales-dashboard-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+/* Dark mode */
+.sales-dashboard.dark-mode {
+  background: var(--dark-background);
+}

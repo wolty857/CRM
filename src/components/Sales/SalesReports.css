@@ -1,0 +1,85 @@
+.sales-reports {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.sales-reports h3 {
+  color: #4ecdc4;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.report-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.report-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  border-color: #4ecdc4;
+}
+
+.report-card h4 {
+  color: var(--text-dark);
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.report-card p {
+  color: var(--text-muted);
+  margin: 0 0 15px 0;
+  font-size: 0.9rem;
+}
+
+.report-btn {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.report-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+/* Dark mode */
+.dark-mode .sales-reports {
+  background: var(--dark-card-background);
+  border-color: var(--dark-border-color);
+}
+
+.dark-mode .sales-reports h3 {
+  color: #81e6d9;
+}
+
+.dark-mode .report-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .report-card h4 {
+  color: var(--dark-text-color);
+}
+
+.dark-mode .report-card p {
+  color: var(--dark-text-muted);
+}

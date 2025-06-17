@@ -1,0 +1,33 @@
+.admin-dashboard {
+  height: 100%;
+  background: var(--background-color);
+}
+
+.admin-dashboard-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.system-settings {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  text-align: center;
+  color: var(--text-color);
+}
+
+/* Dark mode */
+.admin-dashboard.dark-mode {
+  background: var(--dark-background);
+}
+
+.admin-dashboard.dark-mode .system-settings {
+  background: var(--dark-card-background);
+  border-color: var(--dark-border-color);
+  color: var(--dark-text-color);
+}
