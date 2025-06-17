@@ -14,9 +14,7 @@ import { ClientesProvider } from './context/ClientesContext';
 
 function App() {  const [activeSection, setActiveSection] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);// Collapsed by default on mobile
-  // const [selectedPlan, setSelectedPlan] = useState('básico'); // Eliminado
+  const [isTransitioning, setIsTransitioning] = useState(false);  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);// Collapsed by default on mobile
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('darkMode');
     return savedTheme ? JSON.parse(savedTheme) : false;

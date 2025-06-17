@@ -225,12 +225,6 @@ body.dark-mode .search-input {
   display: none; /* Ocultar completamente */
 }
 
-/* .plan-title { ... } */ /* Eliminado */
-/* .plan-options { ... } */ /* Eliminado */
-/* .plan-option { ... } */ /* Eliminado */
-/* .plan-option:hover { ... } */ /* Eliminado */
-/* .plan-option.active { ... } */ /* Eliminado */
-
 .sidebar-nav {
   padding: 16px 12px;
   flex: 1;
