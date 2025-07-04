@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Login.css';
+import { BsSunFill, BsMoonFill, BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -73,7 +74,7 @@ const Login = ({ onLogin }) => {
               onClick={toggleDarkMode}
               aria-label="Alternar modo oscuro"
             >
-              {darkMode ? '☀️' : '🌙'}
+              {darkMode ? <BsSunFill /> : <BsMoonFill />}
             </button>
           </div>
           <p>Inicia sesión para continuar</p>
@@ -116,7 +117,7 @@ const Login = ({ onLogin }) => {
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={loading}
               >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
+                {showPassword ? <BsEyeSlashFill /> : <BsEyeFill />}
               </button>
             </div>
           </div>

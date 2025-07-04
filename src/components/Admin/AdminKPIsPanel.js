@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getKPIs } from '../../services/api';
 import './AdminKPIsPanel.css';
+import { BsBarChartLine, BsPeople, BsPersonBadgeFill, BsBriefcaseFill, BsCurrencyDollar } from 'react-icons/bs';
 
 function AdminKPIsPanel({ currentUser }) {
   const [data, setData] = useState({
@@ -93,7 +94,7 @@ function AdminKPIsPanel({ currentUser }) {
 
   return (
     <div className="component-card admin-kpi-panel">
-      <h2>📊 Métricas del Sistema</h2>
+      <h2><BsBarChartLine /> Métricas del Sistema</h2>
       
       {loading ? (
         <div className="kpi-loading">
@@ -106,7 +107,7 @@ function AdminKPIsPanel({ currentUser }) {
       ) : (
         <div className="admin-kpi-grid">
           <div className="admin-kpi-item">
-            <div className="kpi-icon">👥</div>
+            <div className="kpi-icon"><BsPeople /></div>
             <div className="kpi-content">
               <span className={`kpi-value ${animated.total_clientes ? 'animate' : ''}`}>
                 {formatNumber(data.total_clientes)}
@@ -116,7 +117,7 @@ function AdminKPIsPanel({ currentUser }) {
           </div>
           
           <div className="admin-kpi-item">
-            <div className="kpi-icon">👨‍💼</div>
+            <div className="kpi-icon"><BsPersonBadgeFill /></div>
             <div className="kpi-content">
               <span className={`kpi-value ${animated.usuarios_activos ? 'animate' : ''}`}>
                 {formatNumber(data.usuarios_activos)}
@@ -126,7 +127,7 @@ function AdminKPIsPanel({ currentUser }) {
           </div>
           
           <div className="admin-kpi-item">
-            <div className="kpi-icon">💼</div>
+            <div className="kpi-icon"><BsBriefcaseFill /></div>
             <div className="kpi-content">
               <span className={`kpi-value ${animated.planes_activos ? 'animate' : ''}`}>
                 {formatNumber(data.planes_activos)}
@@ -136,7 +137,7 @@ function AdminKPIsPanel({ currentUser }) {
           </div>
           
           <div className="admin-kpi-item">
-            <div className="kpi-icon">💰</div>
+            <div className="kpi-icon"><BsCurrencyDollar /></div>
             <div className="kpi-content">
               <span className={`kpi-value ${animated.ingresos_estimados ? 'animate' : ''}`}>
                 ${formatNumber(data.ingresos_estimados)}

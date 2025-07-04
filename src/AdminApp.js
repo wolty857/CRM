@@ -4,6 +4,7 @@ import UsersManagement from './components/UsersManagement';
 import AdminReports from './components/Admin/AdminReports';
 import AgentesChat from './components/AgentesChat';
 import './App.css';
+import { BsBarChartLine, BsPeople, BsGraphUp, BsGearFill, BsRobot, BsPersonCircle, BsShieldLock, BsGem, BsSunFill, BsMoonFill } from 'react-icons/bs';
 
 function AdminApp({ currentUser, onLogout, isDarkMode, setIsDarkMode }) {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -128,35 +129,35 @@ function AdminApp({ currentUser, onLogout, isDarkMode, setIsDarkMode }) {
             className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`}
             onClick={() => handleSectionChange('dashboard')}
           >
-            <span className="nav-icon">📊</span> Dashboard
+            <span className="nav-icon"><BsBarChartLine /></span> Dashboard
           </button>
           
           <button 
             className={`nav-item ${activeSection === 'users-management' ? 'active' : ''}`}
             onClick={() => handleSectionChange('users-management')}
           >
-            <span className="nav-icon">👥</span> Gestión de Usuarios
+            <span className="nav-icon"><BsPeople /></span> Gestión de Usuarios
           </button>
           
           <button 
             className={`nav-item ${activeSection === 'system-reports' ? 'active' : ''}`}
             onClick={() => handleSectionChange('system-reports')}
           >
-            <span className="nav-icon">📈</span> Reportes del Sistema
+            <span className="nav-icon"><BsGraphUp /></span> Reportes del Sistema
           </button>
           
           <button 
             className={`nav-item ${activeSection === 'system-settings' ? 'active' : ''}`}
             onClick={() => handleSectionChange('system-settings')}
           >
-            <span className="nav-icon">⚙️</span> Configuración
+            <span className="nav-icon"><BsGearFill /></span> Configuración
           </button>
           
           <button 
             className={`nav-item ${activeSection === 'agentes' ? 'active' : ''}`}
             onClick={() => handleSectionChange('agentes')}
           >
-            <span className="nav-icon">🤖</span> Agentes IA
+            <span className="nav-icon"><BsRobot /></span> Agentes IA
           </button>
         </nav>
       </aside>
@@ -171,13 +172,13 @@ function AdminApp({ currentUser, onLogout, isDarkMode, setIsDarkMode }) {
             <div className="user-info">
               <div className="user-details">
                 <span className="user-name">
-                  👤 {currentUser?.nombre_completo || currentUser?.username || 'Administrador'}
+                  <BsPersonCircle /> {currentUser?.nombre_completo || currentUser?.username || 'Administrador'}
                 </span>
                 <span className="user-role">
-                  🔐 Administrador
+                  <BsShieldLock /> Administrador
                 </span>
                 <span className="user-plan">
-                  💎 Plan {currentUser?.plan ? currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1) : 'Básico'}
+                  <BsGem /> Plan {currentUser?.plan ? currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1) : 'Básico'}
                 </span>
               </div>
               <button className="logout-btn" onClick={onLogout}>
@@ -198,7 +199,7 @@ function AdminApp({ currentUser, onLogout, isDarkMode, setIsDarkMode }) {
 
       {/* Botón para cambiar modo oscuro */}
       <button className="dark-mode-toggle" onClick={toggleDarkMode}>
-        {isDarkMode ? '☀️' : '🌙'}
+        {isDarkMode ? <BsSunFill /> : <BsMoonFill />}
       </button>
     </div>
   );

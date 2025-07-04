@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getKPIs } from '../../services/api';
 import './SalesKPIsPanel.css';
+import { BsBullseye, BsPeople, BsFire, BsCurrencyDollar, BsGraphUp } from 'react-icons/bs';
 
 function SalesKPIsPanel({ currentUser }) {
   const [data, setData] = useState({
@@ -93,7 +94,7 @@ function SalesKPIsPanel({ currentUser }) {
 
   return (
     <div className="component-card sales-kpi-panel">
-      <h2>🎯 Mis Indicadores de Ventas</h2>
+      <h2><BsBullseye /> Mis Indicadores de Ventas</h2>
       
       {loading ? (
         <div className="kpi-loading">
@@ -106,7 +107,7 @@ function SalesKPIsPanel({ currentUser }) {
       ) : (
         <div className="sales-kpi-grid">
           <div className="sales-kpi-item">
-            <div className="kpi-icon">👥</div>
+            <div className="kpi-icon"><BsPeople /></div>
             <div className="kpi-content">
               <span className={`kpi-value ${animated.total_clientes ? 'animate' : ''}`}>
                 {formatNumber(data.total_clientes)}
@@ -116,7 +117,7 @@ function SalesKPIsPanel({ currentUser }) {
           </div>
           
           <div className="sales-kpi-item hot-leads">
-            <div className="kpi-icon">🔥</div>
+            <div className="kpi-icon"><BsFire /></div>
             <div className="kpi-content">
               <span className={`kpi-value ${animated.clientes_calientes ? 'animate' : ''}`}>
                 {formatNumber(data.clientes_calientes)}
@@ -126,7 +127,7 @@ function SalesKPIsPanel({ currentUser }) {
           </div>
           
           <div className="sales-kpi-item">
-            <div className="kpi-icon">💰</div>
+            <div className="kpi-icon"><BsCurrencyDollar /></div>
             <div className="kpi-content">
               <span className={`kpi-value ${animated.ingresos_estimados ? 'animate' : ''}`}>
                 ${formatNumber(data.ingresos_estimados)}
@@ -136,7 +137,7 @@ function SalesKPIsPanel({ currentUser }) {
           </div>
           
           <div className="sales-kpi-item conversion">
-            <div className="kpi-icon">📈</div>
+            <div className="kpi-icon"><BsGraphUp /></div>
             <div className="kpi-content">
               <span className={`kpi-value ${animated.tasa_conversion ? 'animate' : ''}`}>
                 {data.tasa_conversion}%

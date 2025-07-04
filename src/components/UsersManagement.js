@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UsersManagement.css';
+import { BsShieldLockFill, BsPersonBadge, BsEnvelope, BsGem, BsCalendar, BsPencilSquare, BsTrash, BsSave, BsX, BsPlus } from 'react-icons/bs';
 
 function UsersManagement({ searchQuery, isDarkMode }) {
   const [users, setUsers] = useState([]);
@@ -122,7 +123,7 @@ function UsersManagement({ searchQuery, isDarkMode }) {
   };
 
   const getRoleIcon = (role) => {
-    return role === 'admin' ? '🔐' : '👨‍💼';
+    return role === 'admin' ? <BsShieldLockFill /> : <BsPersonBadge />;
   };
 
   const getRoleBadgeClass = (role) => {
@@ -139,7 +140,7 @@ function UsersManagement({ searchQuery, isDarkMode }) {
           className="add-user-btn"
           onClick={() => setShowAddForm(!showAddForm)}
         >
-          {showAddForm ? '✕ Cancelar' : '+ Agregar Usuario'}
+          {showAddForm ? (<><BsX /> Cancelar</>) : (<><BsPlus /> Agregar Usuario</>)}
         </button>
       </div>
 
@@ -221,15 +222,15 @@ function UsersManagement({ searchQuery, isDarkMode }) {
                 
                 <div className="user-details">
                   <div className="detail-item">
-                    <span className="label">📧 Email:</span>
+                    <span className="label"><BsEnvelope /> Email:</span>
                     <span className="value">{user.email || 'No especificado'}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="label">💎 Plan:</span>
+                    <span className="label"><BsGem /> Plan:</span>
                     <span className="value">{user.plan || 'Básico'}</span>
                   </div>
                   <div className="detail-item">
-                    <span className="label">📅 Creado:</span>
+                    <span className="label"><BsCalendar /> Creado:</span>
                     <span className="value">
                       {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
                     </span>
@@ -241,14 +242,14 @@ function UsersManagement({ searchQuery, isDarkMode }) {
                     className="edit-btn"
                     onClick={() => setEditingUser(user)}
                   >
-                    ✏️ Editar
+                    <BsPencilSquare /> Editar
                   </button>
                   {user.role !== 'admin' && (
                     <button 
                       className="delete-btn"
                       onClick={() => handleDeleteUser(user.id)}
                     >
-                      🗑️ Eliminar
+                      <BsTrash /> Eliminar
                     </button>
                   )}
                 </div>
@@ -311,8 +312,8 @@ function UsersManagement({ searchQuery, isDarkMode }) {
               />
             </div>
             <div className="form-row">
-              <button type="submit" className="save-btn">💾 Guardar Cambios</button>
-              <button type="button" className="cancel-btn" onClick={cancelEdit}>❌ Cancelar</button>
+              <button type="submit" className="save-btn"><BsSave /> Guardar Cambios</button>
+              <button type="button" className="cancel-btn" onClick={cancelEdit}><BsX /> Cancelar</button>
             </div>
           </form>
         </div>

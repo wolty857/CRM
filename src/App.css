@@ -280,6 +280,15 @@ body.dark-mode .search-input {
   justify-content: center;
 }
 
+.nav-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-icon {
+  margin-right: 8px;
+}
+
 .nav-item:hover {
   background-color: transparent;
   color: var(--primary-color);
@@ -767,4 +776,9 @@ body.dark-mode .dark-mode-toggle {
 
 .user-role:contains('Vendedor') {
   background: linear-gradient(135deg, #4ecdc4, #44a08d);
+}
+
+.kpi-icon svg {
+  width: 32px;
+  height: 32px;
 }
