@@ -1,0 +1,10 @@
+# Dependencias
+/node_modules
+/dist
+
+# Archivos de entorno
+.env
+.env.*
+
+# Secretos de Google
+client_secret_*.json

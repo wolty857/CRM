@@ -32,6 +32,7 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('google_access_token');
     setIsAuthenticated(false);
     setCurrentUser(null);
   };

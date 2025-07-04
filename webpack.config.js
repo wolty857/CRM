@@ -1,5 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const webpack = require('webpack');
+// dotenv ya no es necesario
 
 module.exports = {
   entry: './src/index.js', // Punto de entrada de nuestra aplicación React
@@ -41,7 +43,7 @@ module.exports = {
       directory: path.join(__dirname, 'dist'), // Servir archivos estáticos desde dist
     },
     compress: true,
-    port: 3001, // Puerto cambiado a 3001
+    port: 3000, // Puerto cambiado a 3001
     // historyApiFallback: true, // Para manejar rutas de React Router (si lo usas después)
   },
   resolve: {

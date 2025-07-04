@@ -148,3 +148,191 @@
     padding: 12px;
   }
 }
+
+/* Nuevos estilos Agenda */
+.google-connect-btn {
+  background-color: #4285F4;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.google-connect-btn:hover {
+  background-color: #3367D6;
+}
+
+.event-item {
+  list-style: none;
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #f2f2f2;
+}
+
+.event-title {
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.error-text {
+  color: #e53935;
+}
+
+/* FullCalendar overrides */
+.fc .fc-toolbar-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .agenda-container {
+    padding: 10px;
+  }
+}
+
+/* Layout wrapper */
+.calendar-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+}
+
+.calendar-main {
+  flex: 2 1 450px;
+}
+
+.events-sidebar {
+  flex: 1 1 260px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 16px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.events-sidebar h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 8px;
+  transition: background 0.3s;
+}
+
+.event-item:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.event-date {
+  font-weight: 600;
+  margin-right: 12px;
+  white-space: nowrap;
+}
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-time {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* FullCalendar theme overrides usando CSS Variables */
+body.dark-mode {
+  --fc-page-bg-color: #1f1f1f;
+  --fc-neutral-bg-color: #242424;
+  --fc-border-color: #333;
+  --fc-button-bg-color: #7a3cff;
+  --fc-button-border-color: #7a3cff;
+  --fc-button-text-color: #ffffff;
+  --fc-button-hover-bg-color: #9c5dff;
+  --fc-button-active-bg-color: #b278ff;
+  --fc-today-bg-color: rgba(255,255,255,0.1);
+  --fc-event-bg-color: #9c5dff;
+  --fc-event-border-color: #9c5dff;
+  --fc-event-text-color: #fff;
+  --fc-more-link-bg-color: #7a3cff;
+  --fc-more-link-text-color: #fff;
+}
+
+/* Modo claro opcional (lo ajustas si usas claro) */
+body:not(.dark-mode) {
+  --fc-button-bg-color: #7a3cff;
+  --fc-button-border-color: #7a3cff;
+  --fc-button-text-color: #ffffff;
+  --fc-button-hover-bg-color: #9c5dff;
+  --fc-button-active-bg-color: #b278ff;
+  --fc-event-bg-color: #7a3cff;
+  --fc-event-border-color: #7a3cff;
+  --fc-event-text-color: #fff;
+}
+
+/* Ajustes de fuentes y bordes */
+.fc {
+  font-family: "Inter", sans-serif;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.fc .fc-button {
+  transition: background-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .calendar-wrapper {
+    flex-direction: column;
+  }
+  .events-sidebar {
+    max-height: none;
+  }
+}
+
+.google-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #ffffff;
+}
+
+.google-badge img {
+  width: 24px;
+  height: 24px;
+}
+
+.not-connected {
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+.calendar-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.google-connect-btn {
+  padding: 14px 32px;
+  font-size: 1.05rem;
+}
