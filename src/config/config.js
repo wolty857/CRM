@@ -1,7 +1,7 @@
 // Configuración del API
 export const API_CONFIG = {
   // Cambiar esta URL según tu configuración de XAMPP
-  BASE_URL: '/dashboard/CRM Wolty/CRM/api',
+  BASE_URL: 'C:/xampp/htdocs/CRM/api',
   
   // Endpoints específicos
   ENDPOINTS: {

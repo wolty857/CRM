@@ -56,23 +56,23 @@ body.dark-mode .leads-table tbody tr:hover {
 }
 
 .estado-nuevo {
-  background-color: var(--info-color-bg, rgba(59, 130, 246, 0.1)); /* Fallback if var not defined */
+  background-color: var(--info-color-bg, rgba(0, 0, 0, 0.1)); /* Fallback if var not defined */
   color: var(--info-color, #3b82f6);
 }
 
 .estado-activo {
-  background-color: var(--success-color-bg, rgba(16, 185, 129, 0.1));
-  color: var(--success-color, #10b981);
+  background-color: var(--success-color-bg, rgba(0, 0, 0, 0.1));
+  color: var(--danger-color, #ef4444);
 }
 
 .estado-negociacion {
-  background-color: var(--warning-color-bg, rgba(245, 158, 11, 0.1));
+  background-color: var(--warning-color-bg, rgba(0, 0, 0, 0.1));
   color: var(--warning-color, #f59e0b);
 }
 
 .estado-perdido {
-  background-color: var(--danger-color-bg, rgba(239, 68, 68, 0.1));
-  color: var(--danger-color, #ef4444);
+  background-color: var(--danger-color-bg, rgba(0, 0, 0, 0.1));
+  color: var(--success-color, #10b981);
 }
 
 /* Badges de plan */
