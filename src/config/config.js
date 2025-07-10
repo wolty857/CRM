@@ -3,6 +3,7 @@ export const API_CONFIG = {
   // Cambiar esta URL según tu configuración de XAMPP
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   BASE_URL: 'C:/xampp/htdocs/CRM/api',
 
 =======
@@ -11,6 +12,9 @@ export const API_CONFIG = {
 =======
   BASE_URL: '/dashboard/CRM Wolty/CRM/api',
 >>>>>>> f4dea9b (Añadir Clientes v1)
+=======
+  BASE_URL: '/dashboard/CRM Wolty/CRM/api',
+>>>>>>> Fran
   
   // Endpoints específicos
   ENDPOINTS: {

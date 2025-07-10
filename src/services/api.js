@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 
 const API_BASE_URL = 'http://localhost/dashboard/CRM/api'; // Ruta corregida para XAMPP
 
+=======
+const API_BASE_URL = 'http://localhost/dashboard/CRM%20Wolty/CRM/api'; // Ruta corregida para XAMPP
+>>>>>>> Fran
 
 // Helper function for handling API responses
 const handleResponse = async (response) => {
