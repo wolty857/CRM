@@ -1,4 +1,6 @@
+
 const API_BASE_URL = 'http://localhost/CRM/api'; // Ruta corregida para XAMPP
+
 
 // Helper function for handling API responses
 const handleResponse = async (response) => {
