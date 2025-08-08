@@ -349,3 +349,30 @@ body.dark-mode .add-lead-form select option {
   background-color: #ffebee;
   color: #d32f2f;
 }
+
+/* Nuevos estados según la base de datos */
+.estado-frio {
+  background-color: #e1f5fe;
+  color: #0277bd;
+}
+
+.estado-tibio {
+  background-color: #fff8e1;
+  color: #f57c00;
+}
+
+.estado-caliente {
+  background-color: #ffebee;
+  color: #d32f2f;
+}
+
+/* Plan badges */
+.plan-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 100px;
+}

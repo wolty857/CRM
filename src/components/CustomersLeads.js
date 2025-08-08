@@ -14,12 +14,12 @@ function CustomersLeads({ searchQuery, currentUser }) {
   const [nuevoNombre, setNuevoNombre] = useState('');
   const [nuevoEmail, setNuevoEmail] = useState('');
   const [nuevoTelefono, setNuevoTelefono] = useState('');
-  const [nuevoEstado, setNuevoEstado] = useState('Nuevo');
-  const [nuevoOrigen, setNuevoOrigen] = useState('Página Web');
+  const [nuevoEstado, setNuevoEstado] = useState('Frío');
+  const [nuevoPlan, setNuevoPlan] = useState('Plan Básico');
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
   const [editandoId, setEditandoId] = useState(null);
   const [filtroEstado, setFiltroEstado] = useState('Todos');
-  const [filtroOrigen, setFiltroOrigen] = useState('Todos');
+  const [filtroPlan, setFiltroPlan] = useState('Todos');
   // Filtrar clientes cuando cambia el searchQuery, clientes o filtros
   useEffect(() => {
     let filtrados = clientes;
@@ -37,19 +37,19 @@ function CustomersLeads({ searchQuery, currentUser }) {
       filtrados = filtrados.filter(cliente => cliente.estado === filtroEstado);
     }
 
-    // Filtro por origen
-    if (filtroOrigen !== 'Todos') {
-      filtrados = filtrados.filter(cliente => cliente.origen === filtroOrigen);
+    // Filtro por plan
+    if (filtroPlan !== 'Todos') {
+      filtrados = filtrados.filter(cliente => cliente.plan === filtroPlan);
     }
 
     setClientesFiltrados(filtrados);
-  }, [searchQuery, clientes, filtroEstado, filtroOrigen]);
+  }, [searchQuery, clientes, filtroEstado, filtroPlan]);
   const resetForm = () => {
     setNuevoNombre('');
     setNuevoEmail('');
     setNuevoTelefono('');
-    setNuevoEstado('Nuevo');
-    setNuevoOrigen('Página Web');
+    setNuevoEstado('Frío');
+    setNuevoPlan('Plan Básico');
     setEditandoId(null);
   };
 
@@ -63,7 +63,7 @@ function CustomersLeads({ searchQuery, currentUser }) {
       email: nuevoEmail,
       telefono: nuevoTelefono,
       estado: nuevoEstado,
-      origen: nuevoOrigen
+      plan: nuevoPlan
     };
 
     try {
@@ -83,7 +83,7 @@ function CustomersLeads({ searchQuery, currentUser }) {
     setNuevoEmail(cliente.email || '');
     setNuevoTelefono(cliente.telefono || '');
     setNuevoEstado(cliente.estado);
-    setNuevoOrigen(cliente.origen || 'Página Web');
+    setNuevoPlan(cliente.plan || 'Plan Básico');
     setEditandoId(cliente.id);
   };
 
@@ -98,38 +98,30 @@ function CustomersLeads({ searchQuery, currentUser }) {
   };  // Función para generar la clase CSS basada en el estado
   const getEstadoClass = (estado) => {
     switch(estado) {
-      case 'Nuevo':
-        return 'estado-nuevo';
-      case 'Contactado':
-        return 'estado-contactado';
-      case 'Calificado':
-        return 'estado-calificado';
-      case 'Negociación':
-        return 'estado-negociacion';
-      case 'Cliente':
-        return 'estado-cliente';
-      case 'Perdido':
+      case 'Frío':
+        return 'estado-frio';
+      case 'Tibio':
+        return 'estado-tibio';
+      case 'Caliente':
+        return 'estado-caliente';
+      case 'Cliente Perdido':
         return 'estado-perdido';
       default:
-        return 'estado-nuevo';
+        return 'estado-frio';
     }
   };
   
-  // Función para generar la clase CSS basada en el origen
-  const getOrigenClass = (origen) => {
-    switch(origen) {
-      case 'Página Web':
-        return 'origen-web';
-      case 'Redes Sociales':
-        return 'origen-social';
-      case 'Referido':
-        return 'origen-referido';
-      case 'Evento':
-        return 'origen-evento';
-      case 'Llamada Fría':
-        return 'origen-fria';
+  // Función para generar la clase CSS basada en el plan
+  const getPlanClass = (plan) => {
+    switch(plan) {
+      case 'Plan Básico':
+        return 'plan-basico';
+      case 'Plan Pro':
+        return 'plan-pro';
+      case 'Plan Premium':
+        return 'plan-premium';
       default:
-        return 'origen-web';
+        return 'plan-basico';
     }
   };
 
@@ -150,35 +142,31 @@ function CustomersLeads({ searchQuery, currentUser }) {
           <label>Estado:</label>
           <select value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}>
             <option value="Todos">Todos los estados</option>
-            <option value="Nuevo">Nuevo</option>
-            <option value="Contactado">Contactado</option>
-            <option value="Calificado">Calificado</option>
-            <option value="Negociación">Negociación</option>
-            <option value="Cliente">Cliente</option>
-            <option value="Perdido">Perdido</option>
+            <option value="Frío">Frío</option>
+            <option value="Tibio">Tibio</option>
+            <option value="Caliente">Caliente</option>
+            <option value="Cliente Perdido">Cliente Perdido</option>
           </select>
         </div>
         <div className="filter-group">
-          <label>Origen:</label>
-          <select value={filtroOrigen} onChange={(e) => setFiltroOrigen(e.target.value)}>
-            <option value="Todos">Todos los orígenes</option>
-            <option value="Página Web">Página Web</option>
-            <option value="Redes Sociales">Redes Sociales</option>
-            <option value="Referido">Referido</option>
-            <option value="Evento">Evento</option>
-            <option value="Llamada Fría">Llamada Fría</option>
+          <label>Plan:</label>
+          <select value={filtroPlan} onChange={(e) => setFiltroPlan(e.target.value)}>
+            <option value="Todos">Todos los planes</option>
+            <option value="Plan Básico">Plan Básico</option>
+            <option value="Plan Pro">Plan Pro</option>
+            <option value="Plan Premium">Plan Premium</option>
           </select>
         </div>
         <div className="filter-stats">
           <span className="stats-item">Total: {clientesFiltrados.length}</span>
         </div>
-      </div>      {clientesFiltrados.length === 0 && !searchQuery && filtroEstado === 'Todos' && filtroOrigen === 'Todos' && (
+      </div>      {clientesFiltrados.length === 0 && !searchQuery && filtroEstado === 'Todos' && filtroPlan === 'Todos' && (
         <div className="no-data-message">
           <p>Aún no hay leads registrados.</p>
           <p>Utiliza el formulario de abajo para agregar el primero.</p>
         </div>
       )}
-      {clientesFiltrados.length === 0 && (searchQuery || filtroEstado !== 'Todos' || filtroOrigen !== 'Todos') && (
+      {clientesFiltrados.length === 0 && (searchQuery || filtroEstado !== 'Todos' || filtroPlan !== 'Todos') && (
          <div className="no-data-message">
           <p>No se encontraron leads con los filtros aplicados.</p>
         </div>
@@ -191,7 +179,7 @@ function CustomersLeads({ searchQuery, currentUser }) {
               <th>Email</th>
               <th>Teléfono</th>
               <th>Estado</th>
-              <th>Origen</th>
+              <th>Plan</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -207,8 +195,8 @@ function CustomersLeads({ searchQuery, currentUser }) {
                   </span>
                 </td>
                 <td>
-                  <span className={`origen-badge ${getOrigenClass(cliente.origen || 'Página Web')}`}>
-                    {cliente.origen || 'Página Web'}
+                  <span className={`plan-badge ${getPlanClass(cliente.plan || 'Plan Básico')}`}>
+                    {cliente.plan || 'Plan Básico'}
                   </span>
                 </td>
                 <td>
@@ -255,22 +243,18 @@ function CustomersLeads({ searchQuery, currentUser }) {
           value={nuevoEstado}
           onChange={(e) => setNuevoEstado(e.target.value)}
         >
-          <option value="Nuevo">Nuevo</option>
-          <option value="Contactado">Contactado</option>
-          <option value="Calificado">Calificado</option>
-          <option value="Negociación">Negociación</option>
-          <option value="Cliente">Cliente</option>
-          <option value="Perdido">Perdido</option>
+          <option value="Frío">Frío</option>
+          <option value="Tibio">Tibio</option>
+          <option value="Caliente">Caliente</option>
+          <option value="Cliente Perdido">Cliente Perdido</option>
         </select>
         <select
-          value={nuevoOrigen}
-          onChange={(e) => setNuevoOrigen(e.target.value)}
+          value={nuevoPlan}
+          onChange={(e) => setNuevoPlan(e.target.value)}
         >
-          <option value="Página Web">Página Web</option>
-          <option value="Redes Sociales">Redes Sociales</option>
-          <option value="Referido">Referido</option>
-          <option value="Evento">Evento</option>
-          <option value="Llamada Fría">Llamada Fría</option>
+          <option value="Plan Básico">Plan Básico</option>
+          <option value="Plan Pro">Plan Pro</option>
+          <option value="Plan Premium">Plan Premium</option>
         </select>
         <button onClick={handleAgregarOEditarLead}>
           {editandoId !== null ? 'Guardar Cambios' : 'Agregar Lead'}
